@@ -76,6 +76,8 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 
 	blockmazechainmodulekeeper "blockmazechain/x/blockmazechain/keeper"
+	validatorbonusmodulekeeper "blockmazechain/x/validatorbonus/keeper"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"blockmazechain/docs"
@@ -146,6 +148,7 @@ type App struct {
 	ScopedKeepers             map[string]capabilitykeeper.ScopedKeeper
 
 	BlockmazechainKeeper blockmazechainmodulekeeper.Keeper
+	ValidatorbonusKeeper validatorbonusmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
@@ -250,6 +253,7 @@ func New(
 		&app.GroupKeeper,
 		&app.CircuitBreakerKeeper,
 		&app.BlockmazechainKeeper,
+		&app.ValidatorbonusKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

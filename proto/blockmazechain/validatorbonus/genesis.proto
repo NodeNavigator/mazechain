@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package blockmazechain.validatorbonus;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "blockmazechain/validatorbonus/params.proto";
+import "blockmazechain/validatorbonus/eligible_validator.proto";
+import "blockmazechain/validatorbonus/proposer_count.proto";
+import "blockmazechain/validatorbonus/daily_reward.proto";
+import "blockmazechain/validatorbonus/cycle_reward.proto";
+
+option go_package = "blockmazechain/x/validatorbonus/types";
+
+// GenesisState defines the validatorbonus module's genesis state.
+message GenesisState {
+  
+  // params defines all the parameters of the module.
+           Params            params                = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated EligibleValidator eligibleValidatorList = 2 [(gogoproto.nullable) = false] ;
+  repeated ProposerCount     proposerCountList     = 3 [(gogoproto.nullable) = false] ;
+  repeated DailyReward       dailyRewardList       = 4 [(gogoproto.nullable) = false] ;
+  repeated CycleReward       cycleRewardList       = 5 [(gogoproto.nullable) = false] ;
+}
+

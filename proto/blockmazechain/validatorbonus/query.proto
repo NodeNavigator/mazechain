@@ -1,0 +1,172 @@
+syntax = "proto3";
+
+package blockmazechain.validatorbonus;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "blockmazechain/validatorbonus/params.proto";
+import "blockmazechain/validatorbonus/eligible_validator.proto";
+import "blockmazechain/validatorbonus/proposer_count.proto";
+import "blockmazechain/validatorbonus/daily_reward.proto";
+import "blockmazechain/validatorbonus/cycle_reward.proto";
+
+option go_package = "blockmazechain/x/validatorbonus/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/blockmazechain/validatorbonus/params";
+  
+  }
+  
+  // Queries a list of EligibleValidator items.
+  rpc EligibleValidator    (QueryGetEligibleValidatorRequest) returns (QueryGetEligibleValidatorResponse) {
+    option (google.api.http).get = "/blockmazechain/validatorbonus/eligible_validator/{index}";
+  
+  }
+  rpc EligibleValidatorAll (QueryAllEligibleValidatorRequest) returns (QueryAllEligibleValidatorResponse) {
+    option (google.api.http).get = "/blockmazechain/validatorbonus/eligible_validator";
+  
+  }
+  
+  // Queries a list of ProposerCount items.
+  rpc ProposerCount    (QueryGetProposerCountRequest) returns (QueryGetProposerCountResponse) {
+    option (google.api.http).get = "/blockmazechain/validatorbonus/proposer_count/{index}";
+  
+  }
+  rpc ProposerCountAll (QueryAllProposerCountRequest) returns (QueryAllProposerCountResponse) {
+    option (google.api.http).get = "/blockmazechain/validatorbonus/proposer_count";
+  
+  }
+  
+  // Queries a list of DailyReward items.
+  rpc DailyReward    (QueryGetDailyRewardRequest) returns (QueryGetDailyRewardResponse) {
+    option (google.api.http).get = "/blockmazechain/validatorbonus/daily_reward/{index}";
+  
+  }
+  rpc DailyRewardAll (QueryAllDailyRewardRequest) returns (QueryAllDailyRewardResponse) {
+    option (google.api.http).get = "/blockmazechain/validatorbonus/daily_reward";
+  
+  }
+  
+  // Queries a list of CycleReward items.
+  rpc CycleReward    (QueryGetCycleRewardRequest) returns (QueryGetCycleRewardResponse) {
+    option (google.api.http).get = "/blockmazechain/validatorbonus/cycle_reward/{index}";
+  
+  }
+  rpc CycleRewardAll (QueryAllCycleRewardRequest) returns (QueryAllCycleRewardResponse) {
+    option (google.api.http).get = "/blockmazechain/validatorbonus/cycle_reward";
+  
+  }
+  
+  // Queries a list of ValidatorCycleReward items.
+  rpc ValidatorCycleReward (QueryValidatorCycleRewardRequest) returns (QueryValidatorCycleRewardResponse) {
+    option (google.api.http).get = "/blockmazechain/validatorbonus/validator_cycle_reward/{validatorAddress}/{cycle}/{reward}/{isValidator}";
+  
+  }
+  
+  // Queries a list of CycleRewards items.
+  rpc CycleRewards (QueryCycleRewardsRequest) returns (QueryCycleRewardsResponse) {
+    option (google.api.http).get = "/blockmazechain/validatorbonus/cycle_rewards/{cycle}/{validators}/{rewards}";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetEligibleValidatorRequest {
+  string index = 1;
+}
+
+message QueryGetEligibleValidatorResponse {
+  EligibleValidator eligibleValidator = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllEligibleValidatorRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllEligibleValidatorResponse {
+  repeated EligibleValidator                      eligibleValidator = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination        = 2;
+}
+
+message QueryGetProposerCountRequest {
+  string index = 1;
+}
+
+message QueryGetProposerCountResponse {
+  ProposerCount proposerCount = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllProposerCountRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllProposerCountResponse {
+  repeated ProposerCount                          proposerCount = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination    = 2;
+}
+
+message QueryGetDailyRewardRequest {
+  string index = 1;
+}
+
+message QueryGetDailyRewardResponse {
+  DailyReward dailyReward = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDailyRewardRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDailyRewardResponse {
+  repeated DailyReward                            dailyReward = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination  = 2;
+}
+
+message QueryGetCycleRewardRequest {
+  string index = 1;
+}
+
+message QueryGetCycleRewardResponse {
+  CycleReward cycleReward = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllCycleRewardRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCycleRewardResponse {
+  repeated CycleReward                            cycleReward = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination  = 2;
+}
+
+message QueryValidatorCycleRewardRequest {
+  string validatorAddress = 1;
+  uint64 cycle            = 2;
+  string reward           = 3;
+  bool   isValidator      = 4;
+}
+
+message QueryValidatorCycleRewardResponse {}
+
+message QueryCycleRewardsRequest {
+  uint64 cycle      = 1;
+  string validators = 2;
+  string rewards    = 3;
+}
+
+message QueryCycleRewardsResponse {}
+

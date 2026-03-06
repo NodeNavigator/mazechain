@@ -1,0 +1,15 @@
+syntax = "proto3";
+package blockmazechain.validatorbonus;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "blockmazechain/x/validatorbonus/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "blockmazechain/x/validatorbonus/Params";
+  option (gogoproto.equal) = true;
+
+  
+}

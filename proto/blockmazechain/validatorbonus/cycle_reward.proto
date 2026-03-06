@@ -1,0 +1,13 @@
+syntax = "proto3";
+package blockmazechain.validatorbonus;
+
+option go_package = "blockmazechain/x/validatorbonus/types";
+
+message CycleReward {
+  string index = 1; 
+  uint64 cycle = 2; 
+  string validatorAddress = 3; 
+  string amount = 4; 
+  string creator = 5;
+}
+

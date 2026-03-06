@@ -54,8 +54,11 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 
 	blockmazechainmodulev1 "blockmazechain/api/blockmazechain/blockmazechain/module"
+	validatorbonusmodulev1 "blockmazechain/api/blockmazechain/validatorbonus/module"
 	_ "blockmazechain/x/blockmazechain/module" // import for side-effects
 	blockmazechainmoduletypes "blockmazechain/x/blockmazechain/types"
+	_ "blockmazechain/x/validatorbonus/module" // import for side-effects
+	validatorbonusmoduletypes "blockmazechain/x/validatorbonus/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -94,6 +97,7 @@ var (
 		circuittypes.ModuleName,
 		// chain modules
 		blockmazechainmoduletypes.ModuleName,
+		validatorbonusmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -119,6 +123,7 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		blockmazechainmoduletypes.ModuleName,
+		validatorbonusmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -138,6 +143,7 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		blockmazechainmoduletypes.ModuleName,
+		validatorbonusmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -296,6 +302,10 @@ var (
 			{
 				Name:   blockmazechainmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&blockmazechainmodulev1.Module{}),
+			},
+			{
+				Name:   validatorbonusmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&validatorbonusmodulev1.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

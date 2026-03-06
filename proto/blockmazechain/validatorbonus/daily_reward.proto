@@ -1,0 +1,13 @@
+syntax = "proto3";
+package blockmazechain.validatorbonus;
+
+option go_package = "blockmazechain/x/validatorbonus/types";
+
+message DailyReward {
+  string index = 1; 
+  string validatorAddress = 2; 
+  uint64 day = 3; 
+  string amount = 4; 
+  string creator = 5;
+}
+

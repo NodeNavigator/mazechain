@@ -1,0 +1,12 @@
+syntax = "proto3";
+package blockmazechain.validatorbonus;
+
+option go_package = "blockmazechain/x/validatorbonus/types";
+
+message EligibleValidator {
+  string index = 1; 
+  string validatorAddress = 2; 
+  int32 joinTime = 3; 
+  string creator = 4;
+}
+
