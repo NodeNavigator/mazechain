@@ -25,7 +25,7 @@ service Query {
   
   // Queries a list of EligibleValidator items.
   rpc EligibleValidator    (QueryGetEligibleValidatorRequest) returns (QueryGetEligibleValidatorResponse) {
-    option (google.api.http).get = "/blockmazechain/validatorbonus/eligible_validator/{index}";
+    option (google.api.http).get = "/blockmazechain/validatorbonus/eligible_validator/{id}";
   
   }
   rpc EligibleValidatorAll (QueryAllEligibleValidatorRequest) returns (QueryAllEligibleValidatorResponse) {
@@ -35,7 +35,7 @@ service Query {
   
   // Queries a list of ProposerCount items.
   rpc ProposerCount    (QueryGetProposerCountRequest) returns (QueryGetProposerCountResponse) {
-    option (google.api.http).get = "/blockmazechain/validatorbonus/proposer_count/{index}";
+    option (google.api.http).get = "/blockmazechain/validatorbonus/proposer_count/{id}";
   
   }
   rpc ProposerCountAll (QueryAllProposerCountRequest) returns (QueryAllProposerCountResponse) {
@@ -45,7 +45,7 @@ service Query {
   
   // Queries a list of DailyReward items.
   rpc DailyReward    (QueryGetDailyRewardRequest) returns (QueryGetDailyRewardResponse) {
-    option (google.api.http).get = "/blockmazechain/validatorbonus/daily_reward/{index}";
+    option (google.api.http).get = "/blockmazechain/validatorbonus/daily_reward/{id}";
   
   }
   rpc DailyRewardAll (QueryAllDailyRewardRequest) returns (QueryAllDailyRewardResponse) {
@@ -55,7 +55,7 @@ service Query {
   
   // Queries a list of CycleReward items.
   rpc CycleReward    (QueryGetCycleRewardRequest) returns (QueryGetCycleRewardResponse) {
-    option (google.api.http).get = "/blockmazechain/validatorbonus/cycle_reward/{index}";
+    option (google.api.http).get = "/blockmazechain/validatorbonus/cycle_reward/{id}";
   
   }
   rpc CycleRewardAll (QueryAllCycleRewardRequest) returns (QueryAllCycleRewardResponse) {
@@ -71,7 +71,7 @@ service Query {
   
   // Queries a list of CycleRewards items.
   rpc CycleRewards (QueryCycleRewardsRequest) returns (QueryCycleRewardsResponse) {
-    option (google.api.http).get = "/blockmazechain/validatorbonus/cycle_rewards/{cycle}/{validators}/{rewards}";
+    option (google.api.http).get = "/blockmazechain/validatorbonus/cycle_rewards/{cycle}";
   
   }
 }
@@ -86,7 +86,7 @@ message QueryParamsResponse {
 }
 
 message QueryGetEligibleValidatorRequest {
-  string index = 1;
+  string id = 1;
 }
 
 message QueryGetEligibleValidatorResponse {
@@ -103,7 +103,7 @@ message QueryAllEligibleValidatorResponse {
 }
 
 message QueryGetProposerCountRequest {
-  string index = 1;
+  string id = 1;
 }
 
 message QueryGetProposerCountResponse {
@@ -120,7 +120,7 @@ message QueryAllProposerCountResponse {
 }
 
 message QueryGetDailyRewardRequest {
-  string index = 1;
+  string id = 1;
 }
 
 message QueryGetDailyRewardResponse {
@@ -137,7 +137,7 @@ message QueryAllDailyRewardResponse {
 }
 
 message QueryGetCycleRewardRequest {
-  string index = 1;
+  string id = 1;
 }
 
 message QueryGetCycleRewardResponse {
@@ -166,13 +166,13 @@ message QueryValidatorCycleRewardResponse {
 }
 
 message QueryCycleRewardsRequest {
-  uint64 cycle      = 1;
-  string validators = 2;
-  string rewards    = 3;
+  uint64                                cycle      = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
 message QueryCycleRewardsResponse {
-  repeated string validators = 1;
-  repeated string rewards    = 2;
+  repeated string                        validators = 1;
+  repeated string                        rewards    = 2;
+           cosmos.base.query.v1beta1.PageResponse pagination = 3;
 }
 

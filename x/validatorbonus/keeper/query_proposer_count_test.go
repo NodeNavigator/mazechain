@@ -29,21 +29,21 @@ func TestProposerCountQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetProposerCountRequest{
-				Index: msgs[0].Index,
+				Id: msgs[0].Id,
 			},
 			response: &types.QueryGetProposerCountResponse{ProposerCount: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetProposerCountRequest{
-				Index: msgs[1].Index,
+				Id: msgs[1].Id,
 			},
 			response: &types.QueryGetProposerCountResponse{ProposerCount: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetProposerCountRequest{
-				Index: strconv.Itoa(100000),
+				Id: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

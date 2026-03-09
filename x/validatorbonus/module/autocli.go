@@ -26,7 +26,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "EligibleValidator",
 					Use:            "show-eligible-validator [id]",
 					Short:          "Shows a eligible-validator",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "id"}},
 				},
 				{
 					RpcMethod: "ProposerCountAll",
@@ -37,7 +37,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "ProposerCount",
 					Use:            "show-proposer-count [id]",
 					Short:          "Shows a proposer-count",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "id"}},
 				},
 				{
 					RpcMethod: "DailyRewardAll",
@@ -48,7 +48,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "DailyReward",
 					Use:            "show-daily-reward [id]",
 					Short:          "Shows a daily-reward",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "id"}},
 				},
 				{
 					RpcMethod: "CycleRewardAll",
@@ -59,7 +59,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "CycleReward",
 					Use:            "show-cycle-reward [id]",
 					Short:          "Shows a cycle-reward",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "id"}},
 				},
 				{
 					RpcMethod:      "ValidatorCycleReward",
@@ -70,9 +70,9 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 
 				{
 					RpcMethod:      "CycleRewards",
-					Use:            "cycle-rewards [cycle] [validators] [rewards]",
-					Short:          "Query cycle-rewards",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "cycle"}, {ProtoField: "validators"}, {ProtoField: "rewards"}},
+					Use:            "cycle-rewards [cycle]",
+					Short:          "Query paginated cycle rewards for a cycle",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "cycle"}},
 				},
 
 				// this line is used by ignite scaffolding # autocli/query

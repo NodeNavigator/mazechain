@@ -16,7 +16,7 @@ func (k Keeper) SetDailyReward(ctx context.Context, dailyReward types.DailyRewar
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DailyRewardKeyPrefix))
 	b := k.cdc.MustMarshal(&dailyReward)
 	store.Set(types.DailyRewardKey(
-		dailyReward.Index,
+		dailyReward.Id,
 	), b)
 }
 

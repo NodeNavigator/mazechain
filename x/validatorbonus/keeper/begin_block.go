@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"cosmossdk.io/store/prefix"
@@ -49,8 +50,8 @@ func (k Keeper) BeginBlocker(ctx context.Context) error {
 	// Get current block time for eligibility check
 	blockTime := sdkCtx.BlockTime()
 
-	// Check if validator is eligible (exists in eligibleValidator store)
-	_, found := k.GetEligibleValidator(ctx, validatorAddr)
+	// Check if validator is eligible (exists in eligibleValidator store by address)
+	_, found := k.GetEligibleValidatorByAddress(ctx, validatorAddr)
 	if !found {
 		// Check if we're still within the 30-day eligibility window from genesis
 		isWithin30Days, err := k.IsWithin30DayEligibilityWindow(ctx, blockTime)
@@ -62,11 +63,16 @@ func (k Keeper) BeginBlocker(ctx context.Context) error {
 
 		if isWithin30Days {
 			// Auto-add validator to eligible list
+			// Assign a sequential numeric id (1, 2, 3, ...) using a stored counter.
+			nextNumericID := k.getNextEligibleValidatorID(ctx)
 			eligibleValidator := types.EligibleValidator{
-				Index:   validatorAddr,
-				Creator: k.authority, // Module authority
+				Id:               strconv.FormatUint(nextNumericID, 10), // "1", "2", "3", ...
+				ValidatorAddress: validatorAddr,                         // actual validator operator address
+				JoinTime:         int32(sdkCtx.BlockTime().Unix()),      // current block time (unix)
+				Creator:          k.authority,                           // module authority
 			}
 			k.SetEligibleValidator(ctx, eligibleValidator)
+			k.setNextEligibleValidatorID(ctx, nextNumericID+1)
 			k.Logger().Info("auto-added validator to eligible list", "validator", validatorAddr, "height", sdkCtx.BlockHeight())
 		} else {
 			// We're past the 30-day window, validator not eligible
@@ -122,7 +128,7 @@ func (k Keeper) IncrementProposerCount(ctx context.Context, validatorAddr string
 
 	// Create new ProposerCount entry with incremented count
 	proposerCount := types.ProposerCount{
-		Index:            index,
+		Id:               index,
 		ValidatorAddress: validatorAddr,
 		Day:              day,
 		Count:            count + 1,

@@ -16,7 +16,7 @@ func (k Keeper) SetCycleReward(ctx context.Context, cycleReward types.CycleRewar
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.CycleRewardKeyPrefix))
 	b := k.cdc.MustMarshal(&cycleReward)
 	store.Set(types.CycleRewardKey(
-		cycleReward.Index,
+		cycleReward.Id,
 	), b)
 }
 

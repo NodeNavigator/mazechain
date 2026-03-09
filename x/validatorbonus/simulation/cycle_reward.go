@@ -80,7 +80,7 @@ func SimulateMsgUpdateCycleReward(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = cycleReward.Index
+		msg.Index = cycleReward.Id
 
 		txCtx := simulation.OperationInput{
 			R:               r,
@@ -125,7 +125,7 @@ func SimulateMsgDeleteCycleReward(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = cycleReward.Index
+		msg.Index = cycleReward.Id
 
 		txCtx := simulation.OperationInput{
 			R:               r,

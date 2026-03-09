@@ -5,7 +5,10 @@ import (
 
 	"blockmazechain/x/validatorbonus/types"
 
+	"cosmossdk.io/store/prefix"
+	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -23,20 +26,33 @@ func (k Keeper) CycleRewards(goCtx context.Context, req *types.QueryCycleRewards
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Get all cycle rewards for this cycle
-	cycleRewards := k.GetAllCycleRewardsForCycle(ctx, req.Cycle)
+	store := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	cycleStore := prefix.NewStore(store, types.KeyPrefix(types.CycleRewardKeyPrefix))
 
-	// Build response arrays
-	validators := make([]string, 0, len(cycleRewards))
-	rewards := make([]string, 0, len(cycleRewards))
+	var validators []string
+	var rewards []string
 
-	for _, cr := range cycleRewards {
+	pageRes, err := query.Paginate(cycleStore, req.Pagination, func(key []byte, value []byte) error {
+		var cr types.CycleReward
+		if err := k.cdc.Unmarshal(value, &cr); err != nil {
+			return err
+		}
+
+		if cr.Cycle != req.Cycle {
+			return nil
+		}
+
 		validators = append(validators, cr.ValidatorAddress)
 		rewards = append(rewards, cr.Amount)
+		return nil
+	})
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	return &types.QueryCycleRewardsResponse{
 		Validators: validators,
 		Rewards:    rewards,
+		Pagination: pageRes,
 	}, nil
 }

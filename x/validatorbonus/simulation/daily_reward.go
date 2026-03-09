@@ -80,7 +80,7 @@ func SimulateMsgUpdateDailyReward(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = dailyReward.Index
+		msg.Index = dailyReward.Id
 
 		txCtx := simulation.OperationInput{
 			R:               r,
@@ -125,7 +125,7 @@ func SimulateMsgDeleteDailyReward(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = dailyReward.Index
+		msg.Index = dailyReward.Id
 
 		txCtx := simulation.OperationInput{
 			R:               r,

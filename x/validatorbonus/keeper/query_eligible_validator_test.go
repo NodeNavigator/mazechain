@@ -29,21 +29,21 @@ func TestEligibleValidatorQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetEligibleValidatorRequest{
-				Index: msgs[0].Index,
+				Id: msgs[0].Id,
 			},
 			response: &types.QueryGetEligibleValidatorResponse{EligibleValidator: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetEligibleValidatorRequest{
-				Index: msgs[1].Index,
+				Id: msgs[1].Id,
 			},
 			response: &types.QueryGetEligibleValidatorResponse{EligibleValidator: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetEligibleValidatorRequest{
-				Index: strconv.Itoa(100000),
+				Id: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

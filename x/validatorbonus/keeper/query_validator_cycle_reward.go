@@ -34,8 +34,8 @@ func (k Keeper) ValidatorCycleReward(goCtx context.Context, req *types.QueryVali
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Check if validator is eligible
-	_, found := k.GetEligibleValidator(ctx, req.ValidatorAddress)
+	// Check if validator is eligible (by validator address)
+	_, found := k.GetEligibleValidatorByAddress(ctx, req.ValidatorAddress)
 	if !found {
 		// Validator is not eligible
 		return &types.QueryValidatorCycleRewardResponse{

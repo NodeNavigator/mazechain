@@ -19,7 +19,7 @@ var _ = strconv.IntSize
 func createNProposerCount(keeper keeper.Keeper, ctx context.Context, n int) []types.ProposerCount {
 	items := make([]types.ProposerCount, n)
 	for i := range items {
-		items[i].Index = strconv.Itoa(i)
+		items[i].Id = strconv.Itoa(i)
 
 		keeper.SetProposerCount(ctx, items[i])
 	}
@@ -31,7 +31,7 @@ func TestProposerCountGet(t *testing.T) {
 	items := createNProposerCount(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetProposerCount(ctx,
-			item.Index,
+			item.Id,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -45,10 +45,10 @@ func TestProposerCountRemove(t *testing.T) {
 	items := createNProposerCount(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveProposerCount(ctx,
-			item.Index,
+			item.Id,
 		)
 		_, found := keeper.GetProposerCount(ctx,
-			item.Index,
+			item.Id,
 		)
 		require.False(t, found)
 	}

@@ -46,7 +46,7 @@ func (k Keeper) EligibleValidator(ctx context.Context, req *types.QueryGetEligib
 
 	val, found := k.GetEligibleValidator(
 		ctx,
-		req.Index,
+		req.Id,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")

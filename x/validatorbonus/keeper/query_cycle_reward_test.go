@@ -29,21 +29,21 @@ func TestCycleRewardQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetCycleRewardRequest{
-				Index: msgs[0].Index,
+				Id: msgs[0].Id,
 			},
 			response: &types.QueryGetCycleRewardResponse{CycleReward: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetCycleRewardRequest{
-				Index: msgs[1].Index,
+				Id: msgs[1].Id,
 			},
 			response: &types.QueryGetCycleRewardResponse{CycleReward: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetCycleRewardRequest{
-				Index: strconv.Itoa(100000),
+				Id: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

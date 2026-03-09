@@ -80,7 +80,7 @@ func SimulateMsgUpdateEligibleValidator(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = eligibleValidator.Index
+		msg.Index = eligibleValidator.Id
 
 		txCtx := simulation.OperationInput{
 			R:               r,
@@ -125,7 +125,7 @@ func SimulateMsgDeleteEligibleValidator(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = eligibleValidator.Index
+		msg.Index = eligibleValidator.Id
 
 		txCtx := simulation.OperationInput{
 			R:               r,

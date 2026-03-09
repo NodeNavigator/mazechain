@@ -74,7 +74,7 @@ func (k Keeper) StoreDailyRewardInternal(ctx context.Context, validatorAddr stri
 	index := fmt.Sprintf("%s:%d", validatorAddr, day)
 
 	dailyReward := types.DailyReward{
-		Index:            index,
+		Id:               index,
 		ValidatorAddress: validatorAddr,
 		Day:              day,
 		Amount:           amount,
@@ -204,7 +204,7 @@ func (k Keeper) StoreCycleRewardInternal(ctx context.Context, cycle uint64, vali
 	index := fmt.Sprintf("%d:%s", cycle, validatorAddr)
 
 	cycleReward := types.CycleReward{
-		Index:            index,
+		Id:               index,
 		Cycle:            cycle,
 		ValidatorAddress: validatorAddr,
 		Amount:           amount,

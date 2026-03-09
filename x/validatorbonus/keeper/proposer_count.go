@@ -16,7 +16,7 @@ func (k Keeper) SetProposerCount(ctx context.Context, proposerCount types.Propos
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ProposerCountKeyPrefix))
 	b := k.cdc.MustMarshal(&proposerCount)
 	store.Set(types.ProposerCountKey(
-		proposerCount.Index,
+		proposerCount.Id,
 	), b)
 }
 

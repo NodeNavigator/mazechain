@@ -24,7 +24,7 @@ func (k msgServer) CreateCycleReward(goCtx context.Context, msg *types.MsgCreate
 
 	var cycleReward = types.CycleReward{
 		Creator:          msg.Creator,
-		Index:            msg.Index,
+		Id:               msg.Index,
 		Cycle:            msg.Cycle,
 		ValidatorAddress: msg.ValidatorAddress,
 		Amount:           msg.Amount,
@@ -56,7 +56,7 @@ func (k msgServer) UpdateCycleReward(goCtx context.Context, msg *types.MsgUpdate
 
 	var cycleReward = types.CycleReward{
 		Creator:          msg.Creator,
-		Index:            msg.Index,
+		Id:               msg.Index,
 		Cycle:            msg.Cycle,
 		ValidatorAddress: msg.ValidatorAddress,
 		Amount:           msg.Amount,

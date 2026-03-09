@@ -24,7 +24,7 @@ func (k msgServer) CreateEligibleValidator(goCtx context.Context, msg *types.Msg
 
 	var eligibleValidator = types.EligibleValidator{
 		Creator:          msg.Creator,
-		Index:            msg.Index,
+		Id:               msg.Index,
 		ValidatorAddress: msg.ValidatorAddress,
 		JoinTime:         msg.JoinTime,
 	}
@@ -55,7 +55,7 @@ func (k msgServer) UpdateEligibleValidator(goCtx context.Context, msg *types.Msg
 
 	var eligibleValidator = types.EligibleValidator{
 		Creator:          msg.Creator,
-		Index:            msg.Index,
+		Id:               msg.Index,
 		ValidatorAddress: msg.ValidatorAddress,
 		JoinTime:         msg.JoinTime,
 	}

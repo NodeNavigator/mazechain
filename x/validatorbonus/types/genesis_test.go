@@ -25,34 +25,34 @@ func TestGenesisState_Validate(t *testing.T) {
 
 				EligibleValidatorList: []types.EligibleValidator{
 					{
-						Index: "0",
+						Id: "0",
 					},
 					{
-						Index: "1",
+						Id: "1",
 					},
 				},
 				ProposerCountList: []types.ProposerCount{
 					{
-						Index: "0",
+						Id: "0",
 					},
 					{
-						Index: "1",
+						Id: "1",
 					},
 				},
 				DailyRewardList: []types.DailyReward{
 					{
-						Index: "0",
+						Id: "0",
 					},
 					{
-						Index: "1",
+						Id: "1",
 					},
 				},
 				CycleRewardList: []types.CycleReward{
 					{
-						Index: "0",
+						Id: "0",
 					},
 					{
-						Index: "1",
+						Id: "1",
 					},
 				},
 				// this line is used by starport scaffolding # types/genesis/validField
@@ -65,10 +65,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				EligibleValidatorList: []types.EligibleValidator{
 					{
-						Index: "0",
+						Id: "0",
 					},
 					{
-						Index: "0",
+						Id: "0",
 					},
 				},
 			},
@@ -79,10 +79,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				ProposerCountList: []types.ProposerCount{
 					{
-						Index: "0",
+						Id: "0",
 					},
 					{
-						Index: "0",
+						Id: "0",
 					},
 				},
 			},
@@ -93,10 +93,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				DailyRewardList: []types.DailyReward{
 					{
-						Index: "0",
+						Id: "0",
 					},
 					{
-						Index: "0",
+						Id: "0",
 					},
 				},
 			},
@@ -107,10 +107,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CycleRewardList: []types.CycleReward{
 					{
-						Index: "0",
+						Id: "0",
 					},
 					{
-						Index: "0",
+						Id: "0",
 					},
 				},
 			},

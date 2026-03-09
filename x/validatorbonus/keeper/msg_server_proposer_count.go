@@ -24,7 +24,7 @@ func (k msgServer) CreateProposerCount(goCtx context.Context, msg *types.MsgCrea
 
 	var proposerCount = types.ProposerCount{
 		Creator:          msg.Creator,
-		Index:            msg.Index,
+		Id:               msg.Index,
 		ValidatorAddress: msg.ValidatorAddress,
 		Day:              msg.Day,
 		Count:            msg.Count,
@@ -56,7 +56,7 @@ func (k msgServer) UpdateProposerCount(goCtx context.Context, msg *types.MsgUpda
 
 	var proposerCount = types.ProposerCount{
 		Creator:          msg.Creator,
-		Index:            msg.Index,
+		Id:               msg.Index,
 		ValidatorAddress: msg.ValidatorAddress,
 		Day:              msg.Day,
 		Count:            msg.Count,

@@ -46,7 +46,7 @@ func (k Keeper) ProposerCount(ctx context.Context, req *types.QueryGetProposerCo
 
 	val, found := k.GetProposerCount(
 		ctx,
-		req.Index,
+		req.Id,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")

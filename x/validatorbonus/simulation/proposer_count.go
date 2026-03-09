@@ -80,7 +80,7 @@ func SimulateMsgUpdateProposerCount(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = proposerCount.Index
+		msg.Index = proposerCount.Id
 
 		txCtx := simulation.OperationInput{
 			R:               r,
@@ -125,7 +125,7 @@ func SimulateMsgDeleteProposerCount(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = proposerCount.Index
+		msg.Index = proposerCount.Id
 
 		txCtx := simulation.OperationInput{
 			R:               r,

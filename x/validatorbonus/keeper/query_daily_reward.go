@@ -46,7 +46,7 @@ func (k Keeper) DailyReward(ctx context.Context, req *types.QueryGetDailyRewardR
 
 	val, found := k.GetDailyReward(
 		ctx,
-		req.Index,
+		req.Id,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")

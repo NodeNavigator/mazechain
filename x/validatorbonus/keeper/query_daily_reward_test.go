@@ -29,21 +29,21 @@ func TestDailyRewardQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetDailyRewardRequest{
-				Index: msgs[0].Index,
+				Id: msgs[0].Id,
 			},
 			response: &types.QueryGetDailyRewardResponse{DailyReward: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetDailyRewardRequest{
-				Index: msgs[1].Index,
+				Id: msgs[1].Id,
 			},
 			response: &types.QueryGetDailyRewardResponse{DailyReward: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetDailyRewardRequest{
-				Index: strconv.Itoa(100000),
+				Id: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

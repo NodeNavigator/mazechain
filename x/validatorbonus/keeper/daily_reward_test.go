@@ -19,7 +19,7 @@ var _ = strconv.IntSize
 func createNDailyReward(keeper keeper.Keeper, ctx context.Context, n int) []types.DailyReward {
 	items := make([]types.DailyReward, n)
 	for i := range items {
-		items[i].Index = strconv.Itoa(i)
+		items[i].Id = strconv.Itoa(i)
 
 		keeper.SetDailyReward(ctx, items[i])
 	}
@@ -31,7 +31,7 @@ func TestDailyRewardGet(t *testing.T) {
 	items := createNDailyReward(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetDailyReward(ctx,
-			item.Index,
+			item.Id,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -45,10 +45,10 @@ func TestDailyRewardRemove(t *testing.T) {
 	items := createNDailyReward(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveDailyReward(ctx,
-			item.Index,
+			item.Id,
 		)
 		_, found := keeper.GetDailyReward(ctx,
-			item.Index,
+			item.Id,
 		)
 		require.False(t, found)
 	}

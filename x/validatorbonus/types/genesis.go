@@ -26,7 +26,7 @@ func (gs GenesisState) Validate() error {
 	eligibleValidatorIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.EligibleValidatorList {
-		index := string(EligibleValidatorKey(elem.Index))
+		index := string(EligibleValidatorKey(elem.Id))
 		if _, ok := eligibleValidatorIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for eligibleValidator")
 		}
@@ -36,7 +36,7 @@ func (gs GenesisState) Validate() error {
 	proposerCountIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.ProposerCountList {
-		index := string(ProposerCountKey(elem.Index))
+		index := string(ProposerCountKey(elem.Id))
 		if _, ok := proposerCountIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for proposerCount")
 		}
@@ -46,7 +46,7 @@ func (gs GenesisState) Validate() error {
 	dailyRewardIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.DailyRewardList {
-		index := string(DailyRewardKey(elem.Index))
+		index := string(DailyRewardKey(elem.Id))
 		if _, ok := dailyRewardIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for dailyReward")
 		}
@@ -56,7 +56,7 @@ func (gs GenesisState) Validate() error {
 	cycleRewardIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.CycleRewardList {
-		index := string(CycleRewardKey(elem.Index))
+		index := string(CycleRewardKey(elem.Id))
 		if _, ok := cycleRewardIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for cycleReward")
 		}

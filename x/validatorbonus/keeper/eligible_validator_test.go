@@ -19,7 +19,7 @@ var _ = strconv.IntSize
 func createNEligibleValidator(keeper keeper.Keeper, ctx context.Context, n int) []types.EligibleValidator {
 	items := make([]types.EligibleValidator, n)
 	for i := range items {
-		items[i].Index = strconv.Itoa(i)
+		items[i].Id = strconv.Itoa(i)
 
 		keeper.SetEligibleValidator(ctx, items[i])
 	}
@@ -31,7 +31,7 @@ func TestEligibleValidatorGet(t *testing.T) {
 	items := createNEligibleValidator(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetEligibleValidator(ctx,
-			item.Index,
+			item.Id,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -45,10 +45,10 @@ func TestEligibleValidatorRemove(t *testing.T) {
 	items := createNEligibleValidator(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveEligibleValidator(ctx,
-			item.Index,
+			item.Id,
 		)
 		_, found := keeper.GetEligibleValidator(ctx,
-			item.Index,
+			item.Id,
 		)
 		require.False(t, found)
 	}

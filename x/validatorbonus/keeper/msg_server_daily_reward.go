@@ -24,7 +24,7 @@ func (k msgServer) CreateDailyReward(goCtx context.Context, msg *types.MsgCreate
 
 	var dailyReward = types.DailyReward{
 		Creator:          msg.Creator,
-		Index:            msg.Index,
+		Id:               msg.Index,
 		ValidatorAddress: msg.ValidatorAddress,
 		Day:              msg.Day,
 		Amount:           msg.Amount,
@@ -56,7 +56,7 @@ func (k msgServer) UpdateDailyReward(goCtx context.Context, msg *types.MsgUpdate
 
 	var dailyReward = types.DailyReward{
 		Creator:          msg.Creator,
-		Index:            msg.Index,
+		Id:               msg.Index,
 		ValidatorAddress: msg.ValidatorAddress,
 		Day:              msg.Day,
 		Amount:           msg.Amount,

@@ -85,41 +85,41 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 		EligibleValidatorList: []types.EligibleValidator{
 			{
 				Creator: sample.AccAddress(),
-				Index:   "0",
+				Id:      "0",
 			},
 			{
 				Creator: sample.AccAddress(),
-				Index:   "1",
+				Id:      "1",
 			},
 		},
 		ProposerCountList: []types.ProposerCount{
 			{
 				Creator: sample.AccAddress(),
-				Index:   "0",
+				Id:      "0",
 			},
 			{
 				Creator: sample.AccAddress(),
-				Index:   "1",
+				Id:      "1",
 			},
 		},
 		DailyRewardList: []types.DailyReward{
 			{
 				Creator: sample.AccAddress(),
-				Index:   "0",
+				Id:      "0",
 			},
 			{
 				Creator: sample.AccAddress(),
-				Index:   "1",
+				Id:      "1",
 			},
 		},
 		CycleRewardList: []types.CycleReward{
 			{
 				Creator: sample.AccAddress(),
-				Index:   "0",
+				Id:      "0",
 			},
 			{
 				Creator: sample.AccAddress(),
-				Index:   "1",
+				Id:      "1",
 			},
 		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
