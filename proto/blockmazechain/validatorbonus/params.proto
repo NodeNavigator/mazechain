@@ -11,5 +11,12 @@ message Params {
   option (amino.name) = "blockmazechain/x/validatorbonus/Params";
   option (gogoproto.equal) = true;
 
+  // total_reward_pool defines the total reward pool to distribute among validators
+  string total_reward_pool = 1;
   
+  // cycle_days defines the number of days in each cycle
+  uint64 cycle_days = 2;
+  
+  // total_cycles defines the total number of cycles for the program
+  uint64 total_cycles = 3;
 }

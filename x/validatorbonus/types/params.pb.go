@@ -5,13 +5,12 @@ package types
 
 import (
 	fmt "fmt"
-	io "io"
-	math "math"
-	math_bits "math/bits"
-
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	proto "github.com/cosmos/gogoproto/proto"
+	io "io"
+	math "math"
+	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -27,6 +26,12 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // Params defines the parameters for the module.
 type Params struct {
+	// total_reward_pool defines the total reward pool to distribute among validators
+	TotalRewardPool string `protobuf:"bytes,1,opt,name=total_reward_pool,json=totalRewardPool,proto3" json:"total_reward_pool,omitempty"`
+	// cycle_days defines the number of days in each cycle
+	CycleDays uint64 `protobuf:"varint,2,opt,name=cycle_days,json=cycleDays,proto3" json:"cycle_days,omitempty"`
+	// total_cycles defines the total number of cycles for the program
+	TotalCycles uint64 `protobuf:"varint,3,opt,name=total_cycles,json=totalCycles,proto3" json:"total_cycles,omitempty"`
 }
 
 func (m *Params) Reset()         { *m = Params{} }
@@ -62,6 +67,27 @@ func (m *Params) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Params proto.InternalMessageInfo
 
+func (m *Params) GetTotalRewardPool() string {
+	if m != nil {
+		return m.TotalRewardPool
+	}
+	return ""
+}
+
+func (m *Params) GetCycleDays() uint64 {
+	if m != nil {
+		return m.CycleDays
+	}
+	return 0
+}
+
+func (m *Params) GetTotalCycles() uint64 {
+	if m != nil {
+		return m.TotalCycles
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Params)(nil), "blockmazechain.validatorbonus.Params")
 }
@@ -71,18 +97,23 @@ func init() {
 }
 
 var fileDescriptor_dedac7001666460f = []byte{
-	// 168 bytes of a gzipped FileDescriptorProto
+	// 254 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xd2, 0x4a, 0xca, 0xc9, 0x4f,
 	0xce, 0xce, 0x4d, 0xac, 0x4a, 0x4d, 0xce, 0x48, 0xcc, 0xcc, 0xd3, 0x2f, 0x4b, 0xcc, 0xc9, 0x4c,
 	0x49, 0x2c, 0xc9, 0x2f, 0x4a, 0xca, 0xcf, 0x2b, 0x2d, 0xd6, 0x2f, 0x48, 0x2c, 0x4a, 0xcc, 0x2d,
 	0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x45, 0x55, 0xab, 0x87, 0xaa, 0x56, 0x4a, 0x30,
 	0x31, 0x37, 0x33, 0x2f, 0x5f, 0x1f, 0x4c, 0x42, 0x74, 0x48, 0x89, 0xa4, 0xe7, 0xa7, 0xe7, 0x83,
-	0x99, 0xfa, 0x20, 0x16, 0x44, 0x54, 0xc9, 0x92, 0x8b, 0x2d, 0x00, 0x6c, 0xae, 0x95, 0xfe, 0x8b,
-	0x05, 0xf2, 0x8c, 0x5d, 0xcf, 0x37, 0x68, 0xa9, 0xa1, 0x39, 0xa3, 0x02, 0xdd, 0x21, 0x10, 0x0d,
-	0x4e, 0xf6, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x84,
-	0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x10, 0xa5, 0x4a, 0xc8, 0x84,
-	0x92, 0xca, 0x82, 0xd4, 0xe2, 0x24, 0x36, 0xb0, 0x13, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff,
-	0xe2, 0x5c, 0xec, 0xa4, 0xf8, 0x00, 0x00, 0x00,
+	0x99, 0xfa, 0x20, 0x16, 0x44, 0x54, 0x69, 0x39, 0x23, 0x17, 0x5b, 0x00, 0xd8, 0x60, 0x21, 0x2d,
+	0x2e, 0xc1, 0x92, 0xfc, 0x92, 0xc4, 0x9c, 0xf8, 0xa2, 0xd4, 0xf2, 0xc4, 0xa2, 0x94, 0xf8, 0x82,
+	0xfc, 0xfc, 0x1c, 0x09, 0x46, 0x05, 0x46, 0x0d, 0xce, 0x20, 0x7e, 0xb0, 0x44, 0x10, 0x58, 0x3c,
+	0x20, 0x3f, 0x3f, 0x47, 0x48, 0x96, 0x8b, 0x2b, 0xb9, 0x32, 0x39, 0x27, 0x35, 0x3e, 0x25, 0xb1,
+	0xb2, 0x58, 0x82, 0x49, 0x81, 0x51, 0x83, 0x25, 0x88, 0x13, 0x2c, 0xe2, 0x92, 0x58, 0x59, 0x2c,
+	0xa4, 0xc8, 0xc5, 0x03, 0x31, 0x0a, 0x2c, 0x54, 0x2c, 0xc1, 0x0c, 0x56, 0xc0, 0x0d, 0x16, 0x73,
+	0x06, 0x0b, 0x59, 0xe9, 0xbf, 0x58, 0x20, 0xcf, 0xd8, 0xf5, 0x7c, 0x83, 0x96, 0x1a, 0x9a, 0xaf,
+	0x2b, 0xd0, 0xfd, 0x0d, 0x71, 0x9e, 0x93, 0xfd, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31,
+	0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb,
+	0x31, 0x44, 0xa9, 0x12, 0x32, 0xa1, 0xa4, 0xb2, 0x20, 0xb5, 0x38, 0x89, 0x0d, 0xec, 0x63, 0x63,
+	0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x83, 0xbb, 0x3e, 0x2e, 0x67, 0x01, 0x00, 0x00,
 }
 
 func (this *Params) Equal(that interface{}) bool {
@@ -102,6 +133,15 @@ func (this *Params) Equal(that interface{}) bool {
 	if that1 == nil {
 		return this == nil
 	} else if this == nil {
+		return false
+	}
+	if this.TotalRewardPool != that1.TotalRewardPool {
+		return false
+	}
+	if this.CycleDays != that1.CycleDays {
+		return false
+	}
+	if this.TotalCycles != that1.TotalCycles {
 		return false
 	}
 	return true
@@ -126,6 +166,23 @@ func (m *Params) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.TotalCycles != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.TotalCycles))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.CycleDays != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.CycleDays))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.TotalRewardPool) > 0 {
+		i -= len(m.TotalRewardPool)
+		copy(dAtA[i:], m.TotalRewardPool)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.TotalRewardPool)))
+		i--
+		dAtA[i] = 0xa
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -146,6 +203,16 @@ func (m *Params) Size() (n int) {
 	}
 	var l int
 	_ = l
+	l = len(m.TotalRewardPool)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
+	}
+	if m.CycleDays != 0 {
+		n += 1 + sovParams(uint64(m.CycleDays))
+	}
+	if m.TotalCycles != 0 {
+		n += 1 + sovParams(uint64(m.TotalCycles))
+	}
 	return n
 }
 
@@ -184,6 +251,76 @@ func (m *Params) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: Params: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TotalRewardPool", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TotalRewardPool = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CycleDays", wireType)
+			}
+			m.CycleDays = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.CycleDays |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TotalCycles", wireType)
+			}
+			m.TotalCycles = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.TotalCycles |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipParams(dAtA[iNdEx:])

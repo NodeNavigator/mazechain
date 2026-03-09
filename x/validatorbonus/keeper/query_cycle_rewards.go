@@ -10,6 +10,12 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// CycleRewards queries all validator rewards for a specific cycle.
+//
+// Logic:
+// Iterate over cycleReward/{cycle} prefix and return:
+// - validators[]: array of validator addresses
+// - rewards[]: array of corresponding reward amounts (as JSON strings)
 func (k Keeper) CycleRewards(goCtx context.Context, req *types.QueryCycleRewardsRequest) (*types.QueryCycleRewardsResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -17,8 +23,20 @@ func (k Keeper) CycleRewards(goCtx context.Context, req *types.QueryCycleRewards
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Process the query
-	_ = ctx
+	// Get all cycle rewards for this cycle
+	cycleRewards := k.GetAllCycleRewardsForCycle(ctx, req.Cycle)
 
-	return &types.QueryCycleRewardsResponse{}, nil
+	// Build response arrays
+	validators := make([]string, 0, len(cycleRewards))
+	rewards := make([]string, 0, len(cycleRewards))
+
+	for _, cr := range cycleRewards {
+		validators = append(validators, cr.ValidatorAddress)
+		rewards = append(rewards, cr.Amount)
+	}
+
+	return &types.QueryCycleRewardsResponse{
+		Validators: validators,
+		Rewards:    rewards,
+	}, nil
 }

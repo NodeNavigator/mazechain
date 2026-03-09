@@ -2,26 +2,31 @@
 package validatorbonus
 
 import (
-	fmt "fmt"
-	io "io"
-	reflect "reflect"
-	sync "sync"
-
 	_ "cosmossdk.io/api/amino"
+	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	io "io"
+	reflect "reflect"
+	sync "sync"
 )
 
 var (
-	md_Params protoreflect.MessageDescriptor
+	md_Params                   protoreflect.MessageDescriptor
+	fd_Params_total_reward_pool protoreflect.FieldDescriptor
+	fd_Params_cycle_days        protoreflect.FieldDescriptor
+	fd_Params_total_cycles      protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_blockmazechain_validatorbonus_params_proto_init()
 	md_Params = File_blockmazechain_validatorbonus_params_proto.Messages().ByName("Params")
+	fd_Params_total_reward_pool = md_Params.Fields().ByName("total_reward_pool")
+	fd_Params_cycle_days = md_Params.Fields().ByName("cycle_days")
+	fd_Params_total_cycles = md_Params.Fields().ByName("total_cycles")
 }
 
 var _ protoreflect.Message = (*fastReflection_Params)(nil)
@@ -89,6 +94,24 @@ func (x *fastReflection_Params) Interface() protoreflect.ProtoMessage {
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
 func (x *fastReflection_Params) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.TotalRewardPool != "" {
+		value := protoreflect.ValueOfString(x.TotalRewardPool)
+		if !f(fd_Params_total_reward_pool, value) {
+			return
+		}
+	}
+	if x.CycleDays != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.CycleDays)
+		if !f(fd_Params_cycle_days, value) {
+			return
+		}
+	}
+	if x.TotalCycles != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.TotalCycles)
+		if !f(fd_Params_total_cycles, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -104,6 +127,12 @@ func (x *fastReflection_Params) Range(f func(protoreflect.FieldDescriptor, proto
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_Params) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
+	case "blockmazechain.validatorbonus.Params.total_reward_pool":
+		return x.TotalRewardPool != ""
+	case "blockmazechain.validatorbonus.Params.cycle_days":
+		return x.CycleDays != uint64(0)
+	case "blockmazechain.validatorbonus.Params.total_cycles":
+		return x.TotalCycles != uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: blockmazechain.validatorbonus.Params"))
@@ -120,6 +149,12 @@ func (x *fastReflection_Params) Has(fd protoreflect.FieldDescriptor) bool {
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
+	case "blockmazechain.validatorbonus.Params.total_reward_pool":
+		x.TotalRewardPool = ""
+	case "blockmazechain.validatorbonus.Params.cycle_days":
+		x.CycleDays = uint64(0)
+	case "blockmazechain.validatorbonus.Params.total_cycles":
+		x.TotalCycles = uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: blockmazechain.validatorbonus.Params"))
@@ -136,6 +171,15 @@ func (x *fastReflection_Params) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
+	case "blockmazechain.validatorbonus.Params.total_reward_pool":
+		value := x.TotalRewardPool
+		return protoreflect.ValueOfString(value)
+	case "blockmazechain.validatorbonus.Params.cycle_days":
+		value := x.CycleDays
+		return protoreflect.ValueOfUint64(value)
+	case "blockmazechain.validatorbonus.Params.total_cycles":
+		value := x.TotalCycles
+		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: blockmazechain.validatorbonus.Params"))
@@ -156,6 +200,12 @@ func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) pro
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
+	case "blockmazechain.validatorbonus.Params.total_reward_pool":
+		x.TotalRewardPool = value.Interface().(string)
+	case "blockmazechain.validatorbonus.Params.cycle_days":
+		x.CycleDays = value.Uint()
+	case "blockmazechain.validatorbonus.Params.total_cycles":
+		x.TotalCycles = value.Uint()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: blockmazechain.validatorbonus.Params"))
@@ -176,6 +226,12 @@ func (x *fastReflection_Params) Set(fd protoreflect.FieldDescriptor, value proto
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "blockmazechain.validatorbonus.Params.total_reward_pool":
+		panic(fmt.Errorf("field total_reward_pool of message blockmazechain.validatorbonus.Params is not mutable"))
+	case "blockmazechain.validatorbonus.Params.cycle_days":
+		panic(fmt.Errorf("field cycle_days of message blockmazechain.validatorbonus.Params is not mutable"))
+	case "blockmazechain.validatorbonus.Params.total_cycles":
+		panic(fmt.Errorf("field total_cycles of message blockmazechain.validatorbonus.Params is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: blockmazechain.validatorbonus.Params"))
@@ -189,6 +245,12 @@ func (x *fastReflection_Params) Mutable(fd protoreflect.FieldDescriptor) protore
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_Params) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "blockmazechain.validatorbonus.Params.total_reward_pool":
+		return protoreflect.ValueOfString("")
+	case "blockmazechain.validatorbonus.Params.cycle_days":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "blockmazechain.validatorbonus.Params.total_cycles":
+		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: blockmazechain.validatorbonus.Params"))
@@ -258,6 +320,16 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 		var n int
 		var l int
 		_ = l
+		l = len(x.TotalRewardPool)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.CycleDays != 0 {
+			n += 1 + runtime.Sov(uint64(x.CycleDays))
+		}
+		if x.TotalCycles != 0 {
+			n += 1 + runtime.Sov(uint64(x.TotalCycles))
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -286,6 +358,23 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.TotalCycles != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.TotalCycles))
+			i--
+			dAtA[i] = 0x18
+		}
+		if x.CycleDays != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.CycleDays))
+			i--
+			dAtA[i] = 0x10
+		}
+		if len(x.TotalRewardPool) > 0 {
+			i -= len(x.TotalRewardPool)
+			copy(dAtA[i:], x.TotalRewardPool)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.TotalRewardPool)))
+			i--
+			dAtA[i] = 0xa
 		}
 		if input.Buf != nil {
 			input.Buf = append(input.Buf, dAtA...)
@@ -336,6 +425,76 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: Params: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TotalRewardPool", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.TotalRewardPool = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 2:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CycleDays", wireType)
+				}
+				x.CycleDays = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.CycleDays |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 3:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TotalCycles", wireType)
+				}
+				x.TotalCycles = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.TotalCycles |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -389,6 +548,13 @@ type Params struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	// total_reward_pool defines the total reward pool to distribute among validators
+	TotalRewardPool string `protobuf:"bytes,1,opt,name=total_reward_pool,json=totalRewardPool,proto3" json:"total_reward_pool,omitempty"`
+	// cycle_days defines the number of days in each cycle
+	CycleDays uint64 `protobuf:"varint,2,opt,name=cycle_days,json=cycleDays,proto3" json:"cycle_days,omitempty"`
+	// total_cycles defines the total number of cycles for the program
+	TotalCycles uint64 `protobuf:"varint,3,opt,name=total_cycles,json=totalCycles,proto3" json:"total_cycles,omitempty"`
 }
 
 func (x *Params) Reset() {
@@ -411,6 +577,27 @@ func (*Params) Descriptor() ([]byte, []int) {
 	return file_blockmazechain_validatorbonus_params_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *Params) GetTotalRewardPool() string {
+	if x != nil {
+		return x.TotalRewardPool
+	}
+	return ""
+}
+
+func (x *Params) GetCycleDays() uint64 {
+	if x != nil {
+		return x.CycleDays
+	}
+	return 0
+}
+
+func (x *Params) GetTotalCycles() uint64 {
+	if x != nil {
+		return x.TotalCycles
+	}
+	return 0
+}
+
 var File_blockmazechain_validatorbonus_params_proto protoreflect.FileDescriptor
 
 var file_blockmazechain_validatorbonus_params_proto_rawDesc = []byte{
@@ -421,27 +608,33 @@ var file_blockmazechain_validatorbonus_params_proto_rawDesc = []byte{
 	0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0x1a, 0x11, 0x61, 0x6d, 0x69,
 	0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14,
 	0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x22, 0x39, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x3a, 0x2f,
-	0xe8, 0xa0, 0x1f, 0x01, 0x8a, 0xe7, 0xb0, 0x2a, 0x26, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x6d, 0x61,
-	0x7a, 0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x78, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61,
-	0x74, 0x6f, 0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0x2f, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42,
-	0xf7, 0x01, 0x0a, 0x21, 0x63, 0x6f, 0x6d, 0x2e, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a,
-	0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72,
-	0x62, 0x6f, 0x6e, 0x75, 0x73, 0x42, 0x0b, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x50, 0x72, 0x6f,
-	0x74, 0x6f, 0x50, 0x01, 0x5a, 0x30, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a, 0x65, 0x63,
-	0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x6d, 0x61,
-	0x7a, 0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f,
-	0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0xa2, 0x02, 0x03, 0x42, 0x56, 0x58, 0xaa, 0x02, 0x1d, 0x42,
-	0x6c, 0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a, 0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x56, 0x61,
-	0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0xca, 0x02, 0x1d, 0x42,
-	0x6c, 0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a, 0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x56, 0x61,
-	0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0xe2, 0x02, 0x29, 0x42,
-	0x6c, 0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a, 0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x56, 0x61,
-	0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0x5c, 0x47, 0x50, 0x42,
-	0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x1e, 0x42, 0x6c, 0x6f, 0x63, 0x6b,
-	0x6d, 0x61, 0x7a, 0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x56, 0x61, 0x6c, 0x69, 0x64,
-	0x61, 0x74, 0x6f, 0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x72, 0x6f, 0x74, 0x6f, 0x22, 0xa7, 0x01, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12,
+	0x2a, 0x0a, 0x11, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x5f, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x5f,
+	0x70, 0x6f, 0x6f, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x74, 0x6f, 0x74, 0x61,
+	0x6c, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x50, 0x6f, 0x6f, 0x6c, 0x12, 0x1d, 0x0a, 0x0a, 0x63,
+	0x79, 0x63, 0x6c, 0x65, 0x5f, 0x64, 0x61, 0x79, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x09, 0x63, 0x79, 0x63, 0x6c, 0x65, 0x44, 0x61, 0x79, 0x73, 0x12, 0x21, 0x0a, 0x0c, 0x74, 0x6f,
+	0x74, 0x61, 0x6c, 0x5f, 0x63, 0x79, 0x63, 0x6c, 0x65, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04,
+	0x52, 0x0b, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x43, 0x79, 0x63, 0x6c, 0x65, 0x73, 0x3a, 0x2f, 0xe8,
+	0xa0, 0x1f, 0x01, 0x8a, 0xe7, 0xb0, 0x2a, 0x26, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a,
+	0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x78, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74,
+	0x6f, 0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0x2f, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0xf7,
+	0x01, 0x0a, 0x21, 0x63, 0x6f, 0x6d, 0x2e, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a, 0x65,
+	0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x62,
+	0x6f, 0x6e, 0x75, 0x73, 0x42, 0x0b, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x50, 0x72, 0x6f, 0x74,
+	0x6f, 0x50, 0x01, 0x5a, 0x30, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a, 0x65, 0x63, 0x68,
+	0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a,
+	0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72,
+	0x62, 0x6f, 0x6e, 0x75, 0x73, 0xa2, 0x02, 0x03, 0x42, 0x56, 0x58, 0xaa, 0x02, 0x1d, 0x42, 0x6c,
+	0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a, 0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x56, 0x61, 0x6c,
+	0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0xca, 0x02, 0x1d, 0x42, 0x6c,
+	0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a, 0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x56, 0x61, 0x6c,
+	0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0xe2, 0x02, 0x29, 0x42, 0x6c,
+	0x6f, 0x63, 0x6b, 0x6d, 0x61, 0x7a, 0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x56, 0x61, 0x6c,
+	0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0x5c, 0x47, 0x50, 0x42, 0x4d,
+	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x1e, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x6d,
+	0x61, 0x7a, 0x65, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61,
+	0x74, 0x6f, 0x72, 0x62, 0x6f, 0x6e, 0x75, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (

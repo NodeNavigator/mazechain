@@ -160,7 +160,10 @@ message QueryValidatorCycleRewardRequest {
   bool   isValidator      = 4;
 }
 
-message QueryValidatorCycleRewardResponse {}
+message QueryValidatorCycleRewardResponse {
+  bool   isEligible = 1;
+  string reward     = 2;
+}
 
 message QueryCycleRewardsRequest {
   uint64 cycle      = 1;
@@ -168,5 +171,8 @@ message QueryCycleRewardsRequest {
   string rewards    = 3;
 }
 
-message QueryCycleRewardsResponse {}
+message QueryCycleRewardsResponse {
+  repeated string validators = 1;
+  repeated string rewards    = 2;
+}
 

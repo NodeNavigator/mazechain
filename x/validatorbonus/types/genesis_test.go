@@ -56,6 +56,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				// this line is used by starport scaffolding # types/genesis/validField
+				Params: types.DefaultParams(),
 			},
 			valid: true,
 		},
