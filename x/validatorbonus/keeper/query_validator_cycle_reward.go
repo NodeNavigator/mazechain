@@ -2,6 +2,8 @@ package keeper
 
 import (
 	"context"
+	"encoding/hex"
+	"strings"
 
 	"blockmazechain/x/validatorbonus/types"
 
@@ -34,8 +36,14 @@ func (k Keeper) ValidatorCycleReward(goCtx context.Context, req *types.QueryVali
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Check if validator is eligible (by validator address)
-	_, found := k.GetEligibleValidatorByAddress(ctx, req.ValidatorAddress)
+	// Treat ValidatorAddress as a wallet address (account bech32 or 0x) and convert to operator (valoper) address.
+	operatorAddr, err := walletToOperatorAddress(req.ValidatorAddress)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid wallet address: %v", err)
+	}
+
+	// Check if validator is eligible (by validator operator address)
+	_, found := k.GetEligibleValidatorByAddress(ctx, operatorAddr)
 	if !found {
 		// Validator is not eligible
 		return &types.QueryValidatorCycleRewardResponse{
@@ -45,7 +53,7 @@ func (k Keeper) ValidatorCycleReward(goCtx context.Context, req *types.QueryVali
 	}
 
 	// Get the cycle reward for this validator
-	rewardAmount, found := k.GetCycleRewardInternal(ctx, req.Cycle, req.ValidatorAddress)
+	rewardAmount, found := k.GetCycleRewardInternal(ctx, req.Cycle, operatorAddr)
 
 	if !found {
 		// No reward found for this validator in this cycle
@@ -60,4 +68,44 @@ func (k Keeper) ValidatorCycleReward(goCtx context.Context, req *types.QueryVali
 		IsEligible: true,
 		Reward:     rewardAmount.String(),
 	}, nil
+}
+
+// walletToOperatorAddress converts a user-facing wallet address into a validator operator (valoper) bech32 string.
+// Supported inputs:
+//   - validator operator address (cosmosvaloper...) -> returned as is
+//   - account address (cosmos1...) -> converted via sdk.ValAddress(bytes)
+//   - 0x-prefixed EVM address (20-byte hex) -> treated as account bytes then converted as above
+func walletToOperatorAddress(input string) (string, error) {
+	trimmed := strings.TrimSpace(input)
+	if trimmed == "" {
+		return "", status.Error(codes.InvalidArgument, "empty address")
+	}
+
+	// Already a valoper address – pass through
+	if strings.HasPrefix(trimmed, "cosmosvaloper") {
+		return trimmed, nil
+	}
+
+	var acc sdk.AccAddress
+
+	switch {
+	case strings.HasPrefix(trimmed, "0x") || strings.HasPrefix(trimmed, "0X"):
+		// EVM-style address: 0x + 40 hex chars
+		raw := strings.TrimPrefix(strings.TrimPrefix(trimmed, "0x"), "0X")
+		bz, err := hex.DecodeString(raw)
+		if err != nil {
+			return "", err
+		}
+		acc = sdk.AccAddress(bz)
+	default:
+		// Assume bech32 account address (cosmos1...)
+		var err error
+		acc, err = sdk.AccAddressFromBech32(trimmed)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	val := sdk.ValAddress(acc)
+	return val.String(), nil
 }

@@ -65,8 +65,9 @@ service Query {
   
   // Queries a list of ValidatorCycleReward items.
   rpc ValidatorCycleReward (QueryValidatorCycleRewardRequest) returns (QueryValidatorCycleRewardResponse) {
-    option (google.api.http).get = "/blockmazechain/validatorbonus/validator_cycle_reward/{validatorAddress}/{cycle}/{reward}/{isValidator}";
-  
+    // NOTE: The validatorAddress field is interpreted as a user wallet address (bech32 or 0x)
+    // and converted inside the keeper to the validator operator (valoper) address.
+    option (google.api.http).get = "/blockmazechain/validatorbonus/validator_cycle_reward/{validatorAddress}/{cycle}";
   }
   
   // Queries a list of CycleRewards items.
