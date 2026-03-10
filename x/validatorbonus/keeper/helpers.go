@@ -1,24 +1,26 @@
 package keeper
 
 import (
+	"context"
 	"time"
 
 	"cosmossdk.io/math"
 )
 
-// secondsPerDay is the logical length of one "reward day" in seconds.
-// For production, this should be 86400 (24h). For faster local testing with 1s blocks,
-// you can temporarily reduce it (e.g. 60 for 1 minute days).
-const secondsPerDay = int64(86400) // restore this for production
-
-// GetDayFromTime calculates the day index from the provided time and genesis time.
-// day = (blockTime - genesisTime) / secondsPerDay
-func (k Keeper) GetDayFromTime(blockTime time.Time, genesisTime time.Time) uint64 {
-	secondsElapsed := blockTime.Unix() - genesisTime.Unix()
+// GetDayFromTime calculates the day index from the provided time and activation time.
+// day = (blockTime - activationTime) / secondsPerDay
+func (k Keeper) GetDayFromTime(ctx context.Context, blockTime time.Time, activationTime time.Time) uint64 {
+	secondsElapsed := blockTime.Unix() - activationTime.Unix()
 	if secondsElapsed < 0 {
 		return 0
 	}
-	return uint64(secondsElapsed) / uint64(secondsPerDay)
+
+	secondsPerDay := k.GetParams(ctx).SecondsPerDay
+	if secondsPerDay == 0 {
+		secondsPerDay = 86400
+	}
+
+	return uint64(secondsElapsed) / secondsPerDay
 }
 
 // GetCycleFromDay calculates the cycle number from the day index.

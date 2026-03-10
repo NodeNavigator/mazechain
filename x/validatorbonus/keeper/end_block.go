@@ -15,38 +15,43 @@ import (
 func (k Keeper) EndBlocker(ctx context.Context) error {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
-	// Use hardcoded defaults for cycle days (will use params after proto regeneration)
-	cycleDays := uint64(30)
+	// Get params for cycle days
+	params := k.GetParams(ctx)
+	cycleDays := params.CycleDays
 
 	if cycleDays == 0 {
-		k.Logger().Error("cycle_days is not set, skipping reward calculations")
+		k.Logger().Error("cycle_days is not set in params, skipping reward calculations")
 		return nil
 	}
 
 	// Get current block time and calculate current day
 	blockTime := sdkCtx.BlockTime()
 
-	// Retrieve genesis time from store (should be set during genesis)
-	genesisTime, err := k.GetGenesisTime(ctx)
+	// Retrieve activation time from store (should be set during genesis or upgrade)
+	activationTime, err := k.GetActivationTime(ctx)
 	if err != nil {
-		// Genesis time not set yet, set it now using current block time
-		// This assumes the first block time represents genesis time
-		genesisTimeUnix := blockTime.Unix()
-		err := k.SetGenesisTime(ctx, genesisTimeUnix)
+		// Activation time not set yet, set it now using current block time
+		// This assumes the first block time (whether block 1 or upgrade block) represents activation time
+		activationTimeUnix := blockTime.Unix()
+		err := k.SetActivationTime(ctx, activationTimeUnix)
 		if err != nil {
-			k.Logger().Error("failed to set genesis time", "error", err)
+			k.Logger().Error("failed to set activation time", "error", err)
 			return nil
 		}
-		k.Logger().Info("genesis time initialized", "genesis_time", genesisTimeUnix)
-		genesisTime = genesisTimeUnix
+		k.Logger().Info("activation time initialized", "activation_time", activationTimeUnix)
+		activationTime = activationTimeUnix
 	}
 
 	// Calculate current day
-	secondsElapsed := blockTime.Unix() - genesisTime
+	secondsElapsed := blockTime.Unix() - activationTime
 	if secondsElapsed < 0 {
 		return nil
 	}
-	currentDay := uint64(secondsElapsed) / 86400
+	secondsPerDay := params.SecondsPerDay
+	if secondsPerDay == 0 {
+		secondsPerDay = 86400
+	}
+	currentDay := uint64(secondsElapsed) / secondsPerDay
 
 	// Get the last processed day from store
 	lastProcessedDay, err := k.GetLastProcessedDay(ctx)
@@ -92,42 +97,42 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 	return nil
 }
 
-// GetGenesisTime retrieves the genesis time from the module store.
-// This should be set during genesis initialization.
-func (k Keeper) GetGenesisTime(ctx context.Context) (int64, error) {
+// GetActivationTime retrieves the activation time from the module store.
+// This is set automatically on the very first block the module runs (genesis or upgrade).
+func (k Keeper) GetActivationTime(ctx context.Context) (int64, error) {
 	storeAdapter := k.storeService.OpenKVStore(ctx)
 
-	genesisTimeKey := []byte("genesis_time")
-	value, _ := storeAdapter.Get(genesisTimeKey)
+	activationTimeKey := []byte("activation_time")
+	value, _ := storeAdapter.Get(activationTimeKey)
 
 	if value == nil {
-		return 0, fmt.Errorf("genesis time not found in store")
+		return 0, fmt.Errorf("activation time not found in store")
 	}
 
 	if len(value) != 8 {
-		return 0, fmt.Errorf("invalid genesis time format")
+		return 0, fmt.Errorf("invalid activation time format")
 	}
 
 	// Parse int64 from bytes (big-endian)
-	genesisTime := int64(0)
+	activationTime := int64(0)
 	for i := 0; i < 8; i++ {
-		genesisTime = (genesisTime << 8) | int64(value[i])
+		activationTime = (activationTime << 8) | int64(value[i])
 	}
 
-	return genesisTime, nil
+	return activationTime, nil
 }
 
-// SetGenesisTime stores the genesis time in the module store.
-func (k Keeper) SetGenesisTime(ctx context.Context, genesisTime int64) error {
+// SetActivationTime stores the activation time in the module store.
+func (k Keeper) SetActivationTime(ctx context.Context, activationTime int64) error {
 	storeAdapter := k.storeService.OpenKVStore(ctx)
 
 	// Encode int64 as big-endian bytes
 	value := make([]byte, 8)
 	for i := 0; i < 8; i++ {
-		value[7-i] = byte(genesisTime >> (i * 8))
+		value[7-i] = byte(activationTime >> (i * 8))
 	}
 
-	storeAdapter.Set([]byte("genesis_time"), value)
+	storeAdapter.Set([]byte("activation_time"), value)
 	return nil
 }
 

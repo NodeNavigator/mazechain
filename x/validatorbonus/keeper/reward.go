@@ -73,7 +73,8 @@ func (k Keeper) StoreDailyRewardInternal(ctx context.Context, validatorAddr stri
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DailyRewardKeyPrefix))
 
 	// Construct composite key: validatorAddress:day
-	index := fmt.Sprintf("%s:%d", validatorAddr, day)
+	// Zero-pad day to 8 digits for proper lexicographical sorting during pagination
+	index := fmt.Sprintf("%s:%08d", validatorAddr, day)
 
 	dailyReward := types.DailyReward{
 		Id:               index,
@@ -95,7 +96,7 @@ func (k Keeper) GetDailyRewardInternal(ctx context.Context, validatorAddr string
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DailyRewardKeyPrefix))
 
-	index := fmt.Sprintf("%s:%d", validatorAddr, day)
+	index := fmt.Sprintf("%s:%08d", validatorAddr, day)
 	b := store.Get(types.DailyRewardKey(index))
 
 	if b == nil {
@@ -203,7 +204,8 @@ func (k Keeper) StoreCycleRewardInternal(ctx context.Context, cycle uint64, vali
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.CycleRewardKeyPrefix))
 
 	// Construct composite key: cycle:validatorAddress
-	index := fmt.Sprintf("%d:%s", cycle, validatorAddr)
+	// Zero-pad cycle to 8 digits for ordering
+	index := fmt.Sprintf("%08d:%s", cycle, validatorAddr)
 
 	cycleReward := types.CycleReward{
 		Id:               index,
@@ -224,7 +226,7 @@ func (k Keeper) GetCycleRewardInternal(ctx context.Context, cycle uint64, valida
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.CycleRewardKeyPrefix))
 
-	index := fmt.Sprintf("%d:%s", cycle, validatorAddr)
+	index := fmt.Sprintf("%08d:%s", cycle, validatorAddr)
 	b := store.Get(types.CycleRewardKey(index))
 
 	if b == nil {

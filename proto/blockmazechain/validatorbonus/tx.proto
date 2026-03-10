@@ -8,9 +8,6 @@ import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "blockmazechain/validatorbonus/params.proto";
 import "blockmazechain/validatorbonus/eligible_validator.proto";
-import "blockmazechain/validatorbonus/proposer_count.proto";
-import "blockmazechain/validatorbonus/daily_reward.proto";
-import "blockmazechain/validatorbonus/cycle_reward.proto";
 
 option go_package = "blockmazechain/x/validatorbonus/types";
 
@@ -21,19 +18,12 @@ service Msg {
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
   rpc UpdateParams            (MsgUpdateParams           ) returns (MsgUpdateParamsResponse           );
+
+  // CreateEligibleValidator manually adds a validator to the eligible list.
+  // Only callable by the module authority (governance/upgrade handler).
   rpc CreateEligibleValidator (MsgCreateEligibleValidator) returns (MsgCreateEligibleValidatorResponse);
-  rpc UpdateEligibleValidator (MsgUpdateEligibleValidator) returns (MsgUpdateEligibleValidatorResponse);
-  rpc DeleteEligibleValidator (MsgDeleteEligibleValidator) returns (MsgDeleteEligibleValidatorResponse);
-  rpc CreateProposerCount     (MsgCreateProposerCount    ) returns (MsgCreateProposerCountResponse    );
-  rpc UpdateProposerCount     (MsgUpdateProposerCount    ) returns (MsgUpdateProposerCountResponse    );
-  rpc DeleteProposerCount     (MsgDeleteProposerCount    ) returns (MsgDeleteProposerCountResponse    );
-  rpc CreateDailyReward       (MsgCreateDailyReward      ) returns (MsgCreateDailyRewardResponse      );
-  rpc UpdateDailyReward       (MsgUpdateDailyReward      ) returns (MsgUpdateDailyRewardResponse      );
-  rpc DeleteDailyReward       (MsgDeleteDailyReward      ) returns (MsgDeleteDailyRewardResponse      );
-  rpc CreateCycleReward       (MsgCreateCycleReward      ) returns (MsgCreateCycleRewardResponse      );
-  rpc UpdateCycleReward       (MsgUpdateCycleReward      ) returns (MsgUpdateCycleRewardResponse      );
-  rpc DeleteCycleReward       (MsgDeleteCycleReward      ) returns (MsgDeleteCycleRewardResponse      );
 }
+
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
   option (cosmos.msg.v1.signer) =                                       "authority";
@@ -61,112 +51,4 @@ message MsgCreateEligibleValidator {
 }
 
 message MsgCreateEligibleValidatorResponse {}
-
-message MsgUpdateEligibleValidator {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator          = 1;
-  string index            = 2;
-  string validatorAddress = 3;
-  int32  joinTime         = 4;
-}
-
-message MsgUpdateEligibleValidatorResponse {}
-
-message MsgDeleteEligibleValidator {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
-  string index   = 2;
-}
-
-message MsgDeleteEligibleValidatorResponse {}
-
-message MsgCreateProposerCount {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator          = 1;
-  string index            = 2;
-  string validatorAddress = 3;
-  uint64 day              = 4;
-  uint64 count            = 5;
-}
-
-message MsgCreateProposerCountResponse {}
-
-message MsgUpdateProposerCount {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator          = 1;
-  string index            = 2;
-  string validatorAddress = 3;
-  uint64 day              = 4;
-  uint64 count            = 5;
-}
-
-message MsgUpdateProposerCountResponse {}
-
-message MsgDeleteProposerCount {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
-  string index   = 2;
-}
-
-message MsgDeleteProposerCountResponse {}
-
-message MsgCreateDailyReward {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator          = 1;
-  string index            = 2;
-  string validatorAddress = 3;
-  uint64 day              = 4;
-  string amount           = 5;
-}
-
-message MsgCreateDailyRewardResponse {}
-
-message MsgUpdateDailyReward {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator          = 1;
-  string index            = 2;
-  string validatorAddress = 3;
-  uint64 day              = 4;
-  string amount           = 5;
-}
-
-message MsgUpdateDailyRewardResponse {}
-
-message MsgDeleteDailyReward {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
-  string index   = 2;
-}
-
-message MsgDeleteDailyRewardResponse {}
-
-message MsgCreateCycleReward {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator          = 1;
-  string index            = 2;
-  uint64 cycle            = 3;
-  string validatorAddress = 4;
-  string amount           = 5;
-}
-
-message MsgCreateCycleRewardResponse {}
-
-message MsgUpdateCycleReward {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator          = 1;
-  string index            = 2;
-  uint64 cycle            = 3;
-  string validatorAddress = 4;
-  string amount           = 5;
-}
-
-message MsgUpdateCycleRewardResponse {}
-
-message MsgDeleteCycleReward {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
-  string index   = 2;
-}
-
-message MsgDeleteCycleRewardResponse {}
 

@@ -19,4 +19,7 @@ message Params {
   
   // total_cycles defines the total number of cycles for the program
   uint64 total_cycles = 3;
+
+  // seconds_per_day defines the duration of a logical day
+  uint64 seconds_per_day = 4;
 }

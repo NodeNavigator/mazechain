@@ -21,17 +21,6 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	Msg_UpdateParams_FullMethodName            = "/blockmazechain.validatorbonus.Msg/UpdateParams"
 	Msg_CreateEligibleValidator_FullMethodName = "/blockmazechain.validatorbonus.Msg/CreateEligibleValidator"
-	Msg_UpdateEligibleValidator_FullMethodName = "/blockmazechain.validatorbonus.Msg/UpdateEligibleValidator"
-	Msg_DeleteEligibleValidator_FullMethodName = "/blockmazechain.validatorbonus.Msg/DeleteEligibleValidator"
-	Msg_CreateProposerCount_FullMethodName     = "/blockmazechain.validatorbonus.Msg/CreateProposerCount"
-	Msg_UpdateProposerCount_FullMethodName     = "/blockmazechain.validatorbonus.Msg/UpdateProposerCount"
-	Msg_DeleteProposerCount_FullMethodName     = "/blockmazechain.validatorbonus.Msg/DeleteProposerCount"
-	Msg_CreateDailyReward_FullMethodName       = "/blockmazechain.validatorbonus.Msg/CreateDailyReward"
-	Msg_UpdateDailyReward_FullMethodName       = "/blockmazechain.validatorbonus.Msg/UpdateDailyReward"
-	Msg_DeleteDailyReward_FullMethodName       = "/blockmazechain.validatorbonus.Msg/DeleteDailyReward"
-	Msg_CreateCycleReward_FullMethodName       = "/blockmazechain.validatorbonus.Msg/CreateCycleReward"
-	Msg_UpdateCycleReward_FullMethodName       = "/blockmazechain.validatorbonus.Msg/UpdateCycleReward"
-	Msg_DeleteCycleReward_FullMethodName       = "/blockmazechain.validatorbonus.Msg/DeleteCycleReward"
 )
 
 // MsgClient is the client API for Msg service.
@@ -41,18 +30,9 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
+	// CreateEligibleValidator manually adds a validator to the eligible list.
+	// Only callable by the module authority (governance/upgrade handler).
 	CreateEligibleValidator(ctx context.Context, in *MsgCreateEligibleValidator, opts ...grpc.CallOption) (*MsgCreateEligibleValidatorResponse, error)
-	UpdateEligibleValidator(ctx context.Context, in *MsgUpdateEligibleValidator, opts ...grpc.CallOption) (*MsgUpdateEligibleValidatorResponse, error)
-	DeleteEligibleValidator(ctx context.Context, in *MsgDeleteEligibleValidator, opts ...grpc.CallOption) (*MsgDeleteEligibleValidatorResponse, error)
-	CreateProposerCount(ctx context.Context, in *MsgCreateProposerCount, opts ...grpc.CallOption) (*MsgCreateProposerCountResponse, error)
-	UpdateProposerCount(ctx context.Context, in *MsgUpdateProposerCount, opts ...grpc.CallOption) (*MsgUpdateProposerCountResponse, error)
-	DeleteProposerCount(ctx context.Context, in *MsgDeleteProposerCount, opts ...grpc.CallOption) (*MsgDeleteProposerCountResponse, error)
-	CreateDailyReward(ctx context.Context, in *MsgCreateDailyReward, opts ...grpc.CallOption) (*MsgCreateDailyRewardResponse, error)
-	UpdateDailyReward(ctx context.Context, in *MsgUpdateDailyReward, opts ...grpc.CallOption) (*MsgUpdateDailyRewardResponse, error)
-	DeleteDailyReward(ctx context.Context, in *MsgDeleteDailyReward, opts ...grpc.CallOption) (*MsgDeleteDailyRewardResponse, error)
-	CreateCycleReward(ctx context.Context, in *MsgCreateCycleReward, opts ...grpc.CallOption) (*MsgCreateCycleRewardResponse, error)
-	UpdateCycleReward(ctx context.Context, in *MsgUpdateCycleReward, opts ...grpc.CallOption) (*MsgUpdateCycleRewardResponse, error)
-	DeleteCycleReward(ctx context.Context, in *MsgDeleteCycleReward, opts ...grpc.CallOption) (*MsgDeleteCycleRewardResponse, error)
 }
 
 type msgClient struct {
@@ -81,105 +61,6 @@ func (c *msgClient) CreateEligibleValidator(ctx context.Context, in *MsgCreateEl
 	return out, nil
 }
 
-func (c *msgClient) UpdateEligibleValidator(ctx context.Context, in *MsgUpdateEligibleValidator, opts ...grpc.CallOption) (*MsgUpdateEligibleValidatorResponse, error) {
-	out := new(MsgUpdateEligibleValidatorResponse)
-	err := c.cc.Invoke(ctx, Msg_UpdateEligibleValidator_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) DeleteEligibleValidator(ctx context.Context, in *MsgDeleteEligibleValidator, opts ...grpc.CallOption) (*MsgDeleteEligibleValidatorResponse, error) {
-	out := new(MsgDeleteEligibleValidatorResponse)
-	err := c.cc.Invoke(ctx, Msg_DeleteEligibleValidator_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) CreateProposerCount(ctx context.Context, in *MsgCreateProposerCount, opts ...grpc.CallOption) (*MsgCreateProposerCountResponse, error) {
-	out := new(MsgCreateProposerCountResponse)
-	err := c.cc.Invoke(ctx, Msg_CreateProposerCount_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) UpdateProposerCount(ctx context.Context, in *MsgUpdateProposerCount, opts ...grpc.CallOption) (*MsgUpdateProposerCountResponse, error) {
-	out := new(MsgUpdateProposerCountResponse)
-	err := c.cc.Invoke(ctx, Msg_UpdateProposerCount_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) DeleteProposerCount(ctx context.Context, in *MsgDeleteProposerCount, opts ...grpc.CallOption) (*MsgDeleteProposerCountResponse, error) {
-	out := new(MsgDeleteProposerCountResponse)
-	err := c.cc.Invoke(ctx, Msg_DeleteProposerCount_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) CreateDailyReward(ctx context.Context, in *MsgCreateDailyReward, opts ...grpc.CallOption) (*MsgCreateDailyRewardResponse, error) {
-	out := new(MsgCreateDailyRewardResponse)
-	err := c.cc.Invoke(ctx, Msg_CreateDailyReward_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) UpdateDailyReward(ctx context.Context, in *MsgUpdateDailyReward, opts ...grpc.CallOption) (*MsgUpdateDailyRewardResponse, error) {
-	out := new(MsgUpdateDailyRewardResponse)
-	err := c.cc.Invoke(ctx, Msg_UpdateDailyReward_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) DeleteDailyReward(ctx context.Context, in *MsgDeleteDailyReward, opts ...grpc.CallOption) (*MsgDeleteDailyRewardResponse, error) {
-	out := new(MsgDeleteDailyRewardResponse)
-	err := c.cc.Invoke(ctx, Msg_DeleteDailyReward_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) CreateCycleReward(ctx context.Context, in *MsgCreateCycleReward, opts ...grpc.CallOption) (*MsgCreateCycleRewardResponse, error) {
-	out := new(MsgCreateCycleRewardResponse)
-	err := c.cc.Invoke(ctx, Msg_CreateCycleReward_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) UpdateCycleReward(ctx context.Context, in *MsgUpdateCycleReward, opts ...grpc.CallOption) (*MsgUpdateCycleRewardResponse, error) {
-	out := new(MsgUpdateCycleRewardResponse)
-	err := c.cc.Invoke(ctx, Msg_UpdateCycleReward_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) DeleteCycleReward(ctx context.Context, in *MsgDeleteCycleReward, opts ...grpc.CallOption) (*MsgDeleteCycleRewardResponse, error) {
-	out := new(MsgDeleteCycleRewardResponse)
-	err := c.cc.Invoke(ctx, Msg_DeleteCycleReward_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -187,18 +68,9 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
+	// CreateEligibleValidator manually adds a validator to the eligible list.
+	// Only callable by the module authority (governance/upgrade handler).
 	CreateEligibleValidator(context.Context, *MsgCreateEligibleValidator) (*MsgCreateEligibleValidatorResponse, error)
-	UpdateEligibleValidator(context.Context, *MsgUpdateEligibleValidator) (*MsgUpdateEligibleValidatorResponse, error)
-	DeleteEligibleValidator(context.Context, *MsgDeleteEligibleValidator) (*MsgDeleteEligibleValidatorResponse, error)
-	CreateProposerCount(context.Context, *MsgCreateProposerCount) (*MsgCreateProposerCountResponse, error)
-	UpdateProposerCount(context.Context, *MsgUpdateProposerCount) (*MsgUpdateProposerCountResponse, error)
-	DeleteProposerCount(context.Context, *MsgDeleteProposerCount) (*MsgDeleteProposerCountResponse, error)
-	CreateDailyReward(context.Context, *MsgCreateDailyReward) (*MsgCreateDailyRewardResponse, error)
-	UpdateDailyReward(context.Context, *MsgUpdateDailyReward) (*MsgUpdateDailyRewardResponse, error)
-	DeleteDailyReward(context.Context, *MsgDeleteDailyReward) (*MsgDeleteDailyRewardResponse, error)
-	CreateCycleReward(context.Context, *MsgCreateCycleReward) (*MsgCreateCycleRewardResponse, error)
-	UpdateCycleReward(context.Context, *MsgUpdateCycleReward) (*MsgUpdateCycleRewardResponse, error)
-	DeleteCycleReward(context.Context, *MsgDeleteCycleReward) (*MsgDeleteCycleRewardResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -211,39 +83,6 @@ func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*
 }
 func (UnimplementedMsgServer) CreateEligibleValidator(context.Context, *MsgCreateEligibleValidator) (*MsgCreateEligibleValidatorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateEligibleValidator not implemented")
-}
-func (UnimplementedMsgServer) UpdateEligibleValidator(context.Context, *MsgUpdateEligibleValidator) (*MsgUpdateEligibleValidatorResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateEligibleValidator not implemented")
-}
-func (UnimplementedMsgServer) DeleteEligibleValidator(context.Context, *MsgDeleteEligibleValidator) (*MsgDeleteEligibleValidatorResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteEligibleValidator not implemented")
-}
-func (UnimplementedMsgServer) CreateProposerCount(context.Context, *MsgCreateProposerCount) (*MsgCreateProposerCountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateProposerCount not implemented")
-}
-func (UnimplementedMsgServer) UpdateProposerCount(context.Context, *MsgUpdateProposerCount) (*MsgUpdateProposerCountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateProposerCount not implemented")
-}
-func (UnimplementedMsgServer) DeleteProposerCount(context.Context, *MsgDeleteProposerCount) (*MsgDeleteProposerCountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteProposerCount not implemented")
-}
-func (UnimplementedMsgServer) CreateDailyReward(context.Context, *MsgCreateDailyReward) (*MsgCreateDailyRewardResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateDailyReward not implemented")
-}
-func (UnimplementedMsgServer) UpdateDailyReward(context.Context, *MsgUpdateDailyReward) (*MsgUpdateDailyRewardResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateDailyReward not implemented")
-}
-func (UnimplementedMsgServer) DeleteDailyReward(context.Context, *MsgDeleteDailyReward) (*MsgDeleteDailyRewardResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteDailyReward not implemented")
-}
-func (UnimplementedMsgServer) CreateCycleReward(context.Context, *MsgCreateCycleReward) (*MsgCreateCycleRewardResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateCycleReward not implemented")
-}
-func (UnimplementedMsgServer) UpdateCycleReward(context.Context, *MsgUpdateCycleReward) (*MsgUpdateCycleRewardResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateCycleReward not implemented")
-}
-func (UnimplementedMsgServer) DeleteCycleReward(context.Context, *MsgDeleteCycleReward) (*MsgDeleteCycleRewardResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteCycleReward not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -294,204 +133,6 @@ func _Msg_CreateEligibleValidator_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_UpdateEligibleValidator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateEligibleValidator)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdateEligibleValidator(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_UpdateEligibleValidator_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateEligibleValidator(ctx, req.(*MsgUpdateEligibleValidator))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_DeleteEligibleValidator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteEligibleValidator)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).DeleteEligibleValidator(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_DeleteEligibleValidator_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteEligibleValidator(ctx, req.(*MsgDeleteEligibleValidator))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_CreateProposerCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateProposerCount)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).CreateProposerCount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_CreateProposerCount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateProposerCount(ctx, req.(*MsgCreateProposerCount))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_UpdateProposerCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateProposerCount)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdateProposerCount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_UpdateProposerCount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateProposerCount(ctx, req.(*MsgUpdateProposerCount))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_DeleteProposerCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteProposerCount)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).DeleteProposerCount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_DeleteProposerCount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteProposerCount(ctx, req.(*MsgDeleteProposerCount))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_CreateDailyReward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateDailyReward)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).CreateDailyReward(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_CreateDailyReward_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateDailyReward(ctx, req.(*MsgCreateDailyReward))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_UpdateDailyReward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateDailyReward)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdateDailyReward(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_UpdateDailyReward_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateDailyReward(ctx, req.(*MsgUpdateDailyReward))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_DeleteDailyReward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteDailyReward)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).DeleteDailyReward(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_DeleteDailyReward_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteDailyReward(ctx, req.(*MsgDeleteDailyReward))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_CreateCycleReward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateCycleReward)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).CreateCycleReward(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_CreateCycleReward_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateCycleReward(ctx, req.(*MsgCreateCycleReward))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_UpdateCycleReward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateCycleReward)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdateCycleReward(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_UpdateCycleReward_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateCycleReward(ctx, req.(*MsgUpdateCycleReward))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_DeleteCycleReward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteCycleReward)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).DeleteCycleReward(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_DeleteCycleReward_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteCycleReward(ctx, req.(*MsgDeleteCycleReward))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -506,50 +147,6 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateEligibleValidator",
 			Handler:    _Msg_CreateEligibleValidator_Handler,
-		},
-		{
-			MethodName: "UpdateEligibleValidator",
-			Handler:    _Msg_UpdateEligibleValidator_Handler,
-		},
-		{
-			MethodName: "DeleteEligibleValidator",
-			Handler:    _Msg_DeleteEligibleValidator_Handler,
-		},
-		{
-			MethodName: "CreateProposerCount",
-			Handler:    _Msg_CreateProposerCount_Handler,
-		},
-		{
-			MethodName: "UpdateProposerCount",
-			Handler:    _Msg_UpdateProposerCount_Handler,
-		},
-		{
-			MethodName: "DeleteProposerCount",
-			Handler:    _Msg_DeleteProposerCount_Handler,
-		},
-		{
-			MethodName: "CreateDailyReward",
-			Handler:    _Msg_CreateDailyReward_Handler,
-		},
-		{
-			MethodName: "UpdateDailyReward",
-			Handler:    _Msg_UpdateDailyReward_Handler,
-		},
-		{
-			MethodName: "DeleteDailyReward",
-			Handler:    _Msg_DeleteDailyReward_Handler,
-		},
-		{
-			MethodName: "CreateCycleReward",
-			Handler:    _Msg_CreateCycleReward_Handler,
-		},
-		{
-			MethodName: "UpdateCycleReward",
-			Handler:    _Msg_UpdateCycleReward_Handler,
-		},
-		{
-			MethodName: "DeleteCycleReward",
-			Handler:    _Msg_DeleteCycleReward_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
