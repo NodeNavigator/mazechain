@@ -28,11 +28,13 @@ func (k Keeper) CalculateAndStoreDailyRewards(ctx context.Context, day uint64) e
 		return nil
 	}
 
-	// Note: Params will be populated after proto regeneration
-	// For now, use hardcoded defaults that match the requirement
-	totalRewardPool := math.LegacyNewDec(1000000000) // 1 billion
-	cycleDays := uint64(30)
-	totalCycles := uint64(15)
+	// Load module parameters from state
+	params := k.GetParams(ctx)
+
+	// total_reward_pool is stored as string for decimal safety; parse to LegacyDec.
+	totalRewardPool := ParseDecFromString(params.TotalRewardPool)
+	cycleDays := params.CycleDays
+	totalCycles := params.TotalCycles
 
 	totalBlocksDec := math.NewInt(int64(totalBlocks))
 
@@ -143,9 +145,9 @@ func (k Keeper) GetDailyRewardsForValidator(ctx context.Context, validatorAddr s
 //
 // - Then reset proposerCount for next cycle
 func (k Keeper) CalculateAndStoreCycleRewards(ctx context.Context, currentDay uint64) error {
-	// Note: Params will be populated after proto regeneration
-	// For now, use hardcoded defaults
-	cycleDays := uint64(30)
+	// Use configurable cycle_days from module parameters
+	params := k.GetParams(ctx)
+	cycleDays := params.CycleDays
 
 	if cycleDays == 0 {
 		return fmt.Errorf("cycle_days must be greater than 0")
