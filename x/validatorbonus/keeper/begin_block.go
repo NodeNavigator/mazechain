@@ -136,9 +136,9 @@ func (k Keeper) IncrementProposerCount(ctx context.Context, validatorAddr string
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ProposerCountKeyPrefix))
 
-	// Construct composite key: validatorAddress:day
+	// Construct composite key: day:validatorAddress
 	// Use %08d to zero-pad the day for correct lexicographical sorting in pagination
-	index := fmt.Sprintf("%s:%08d", validatorAddr, day)
+	index := fmt.Sprintf("%08d:%s", day, validatorAddr)
 
 	// Get existing count
 	b := store.Get(types.ProposerCountKey(index))
@@ -171,7 +171,7 @@ func (k Keeper) GetProposerCountForDay(ctx context.Context, validatorAddr string
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ProposerCountKeyPrefix))
 
-	index := fmt.Sprintf("%s:%08d", validatorAddr, day)
+	index := fmt.Sprintf("%08d:%s", day, validatorAddr)
 	b := store.Get(types.ProposerCountKey(index))
 
 	if b == nil {
@@ -191,16 +191,15 @@ func (k Keeper) GetAllProposerCountsForDay(ctx context.Context, day uint64) []ty
 
 	var counts []types.ProposerCount
 
-	// Iterate all and filter by day
-	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+	// Iterate only the proposer counts for the specific day using prefix iteration
+	prefixKey := []byte(fmt.Sprintf("%08d:", day))
+	iterator := storetypes.KVStorePrefixIterator(store, prefixKey)
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
 		var pc types.ProposerCount
 		k.cdc.MustUnmarshal(iterator.Value(), &pc)
-		if pc.Day == day {
-			counts = append(counts, pc)
-		}
+		counts = append(counts, pc)
 	}
 
 	return counts

@@ -36,7 +36,7 @@ func (k Keeper) CalculateAndStoreDailyRewards(ctx context.Context, day uint64) e
 	cycleDays := params.CycleDays
 	totalCycles := params.TotalCycles
 
-	totalBlocksDec := math.NewInt(int64(totalBlocks))
+	totalBlocksDec := math.NewIntFromUint64(totalBlocks)
 
 	// Get all proposer counts for this day
 	proposerCounts := k.GetAllProposerCountsForDay(ctx, day)
@@ -44,7 +44,7 @@ func (k Keeper) CalculateAndStoreDailyRewards(ctx context.Context, day uint64) e
 	// Iterate through each proposer and calculate their reward
 	for _, proposerCount := range proposerCounts {
 		validatorAddr := proposerCount.ValidatorAddress
-		proposerBlocks := math.NewInt(int64(proposerCount.Count))
+		proposerBlocks := math.NewIntFromUint64(proposerCount.Count)
 
 		// Calculate daily reward using helper function
 		dailyReward := k.CalculateDailyRewardShare(
@@ -118,16 +118,17 @@ func (k Keeper) GetDailyRewardsForValidator(ctx context.Context, validatorAddr s
 
 	var rewards []types.DailyReward
 
-	// Iterate through all daily rewards
-	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+	// Use prefix iteration on validatorAddress to avoid scanning the entire store
+	prefixKey := []byte(fmt.Sprintf("%s:", validatorAddr))
+	iterator := storetypes.KVStorePrefixIterator(store, prefixKey)
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
 		var dr types.DailyReward
 		k.cdc.MustUnmarshal(iterator.Value(), &dr)
 
-		// Filter by validator address and day range
-		if dr.ValidatorAddress == validatorAddr && dr.Day >= startDay && dr.Day <= endDay {
+		// Filter for the specific day range within this validator's records
+		if dr.Day >= startDay && dr.Day <= endDay {
 			rewards = append(rewards, dr)
 		}
 	}
@@ -248,18 +249,15 @@ func (k Keeper) GetAllCycleRewardsForCycle(ctx context.Context, cycle uint64) []
 
 	var rewards []types.CycleReward
 
-	// Iterate through all cycle rewards
-	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+	// Iterate only the rewards for the specific cycle using prefix iteration
+	prefixKey := []byte(fmt.Sprintf("%08d:", cycle))
+	iterator := storetypes.KVStorePrefixIterator(store, prefixKey)
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
 		var cr types.CycleReward
 		k.cdc.MustUnmarshal(iterator.Value(), &cr)
-
-		// Filter by cycle
-		if cr.Cycle == cycle {
-			rewards = append(rewards, cr)
-		}
+		rewards = append(rewards, cr)
 	}
 
 	return rewards
@@ -271,20 +269,17 @@ func (k Keeper) ResetProposerCountsForCycle(ctx context.Context, startDay, endDa
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ProposerCountKeyPrefix))
 
-	// Collect keys to delete (can't modify store while iterating)
+	// Collect keys to delete for each day in the cycle
 	keysToDelete := [][]byte{}
 
-	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
-	defer iterator.Close()
+	for day := startDay; day <= endDay; day++ {
+		prefixKey := []byte(fmt.Sprintf("%08d:", day))
+		iterator := storetypes.KVStorePrefixIterator(store, prefixKey)
 
-	for ; iterator.Valid(); iterator.Next() {
-		var pc types.ProposerCount
-		k.cdc.MustUnmarshal(iterator.Value(), &pc)
-
-		// Delete if day falls within cycle range
-		if pc.Day >= startDay && pc.Day <= endDay {
+		for ; iterator.Valid(); iterator.Next() {
 			keysToDelete = append(keysToDelete, iterator.Key())
 		}
+		iterator.Close()
 	}
 
 	// Delete collected keys

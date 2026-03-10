@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	"blockmazechain/x/validatorbonus/types"
 
@@ -32,14 +33,14 @@ func (k Keeper) CycleRewards(goCtx context.Context, req *types.QueryCycleRewards
 	var validators []string
 	var rewards []string
 
-	pageRes, err := query.Paginate(cycleStore, req.Pagination, func(key []byte, value []byte) error {
+	// Use prefix indexing by cycle to avoid scanning the entire store
+	prefixKey := []byte(fmt.Sprintf("%08d:", req.Cycle))
+	cyclePrefixStore := prefix.NewStore(cycleStore, prefixKey)
+
+	pageRes, err := query.Paginate(cyclePrefixStore, req.Pagination, func(key []byte, value []byte) error {
 		var cr types.CycleReward
 		if err := k.cdc.Unmarshal(value, &cr); err != nil {
 			return err
-		}
-
-		if cr.Cycle != req.Cycle {
-			return nil
 		}
 
 		validators = append(validators, cr.ValidatorAddress)

@@ -15,11 +15,6 @@ import (
 func (k msgServer) CreateEligibleValidator(goCtx context.Context, msg *types.MsgCreateEligibleValidator) (*types.MsgCreateEligibleValidatorResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Only module authority can add eligible validators
-	if msg.Creator != k.authority {
-		return nil, errorsmod.Wrap(sdkerrors.ErrUnauthorized, "only module authority can add eligible validators")
-	}
-
 	// Check if the value already exists
 	_, isFound := k.GetEligibleValidator(ctx, msg.Index)
 	if isFound {

@@ -3,6 +3,7 @@ package types
 import (
 	"fmt"
 
+	"cosmossdk.io/math"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 )
 
@@ -75,6 +76,11 @@ func validateTotalRewardPool(v interface{}) error {
 	}
 	if totalRewardPool == "" {
 		return fmt.Errorf("total_reward_pool cannot be empty")
+	}
+	// Ensure it's a valid decimal
+	_, err := math.LegacyNewDecFromStr(totalRewardPool)
+	if err != nil {
+		return fmt.Errorf("invalid total_reward_pool: %s", totalRewardPool)
 	}
 	return nil
 }

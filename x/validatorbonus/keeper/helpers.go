@@ -55,7 +55,8 @@ func (k Keeper) CalculateDailyRewardShare(
 	validatorShare := validatorBlocksDec.Quo(totalBlocksDec)
 
 	// Calculate daily reward pool per cycle: total_reward_pool / (cycle_days * total_cycles)
-	totalDays := math.NewInt(int64(cycleDays) * int64(totalCycles))
+	// Use Big Int for multiplication to avoid int64 overflow
+	totalDays := math.NewIntFromUint64(cycleDays).Mul(math.NewIntFromUint64(totalCycles))
 	dailyRewardPool := totalRewardPool.Quo(math.LegacyNewDecFromInt(totalDays))
 
 	// dailyReward = validatorShare * dailyRewardPool

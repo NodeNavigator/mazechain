@@ -19,6 +19,12 @@ func (k Keeper) SetEligibleValidator(ctx context.Context, eligibleValidator type
 	store.Set(types.EligibleValidatorKey(
 		eligibleValidator.Id,
 	), b)
+
+	// Update secondary index: address -> id
+	if eligibleValidator.ValidatorAddress != "" {
+		addressStore := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EligibleValidatorByAddressKeyPrefix))
+		addressStore.Set([]byte(eligibleValidator.ValidatorAddress), []byte(eligibleValidator.Id))
+	}
 }
 
 // GetEligibleValidator returns a eligibleValidator from its index
@@ -49,6 +55,13 @@ func (k Keeper) RemoveEligibleValidator(
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EligibleValidatorKeyPrefix))
+	// Get the validator to find its address for secondary index removal
+	val, found := k.GetEligibleValidator(ctx, index)
+	if found {
+		addressStore := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EligibleValidatorByAddressKeyPrefix))
+		addressStore.Delete([]byte(val.ValidatorAddress))
+	}
+
 	store.Delete(types.EligibleValidatorKey(
 		index,
 	))
@@ -98,20 +111,16 @@ func (k Keeper) setNextEligibleValidatorID(ctx context.Context, nextID uint64) {
 
 // GetEligibleValidatorByAddress returns an eligibleValidator by its validatorAddress field.
 // This is used internally for eligibility checks where the natural key is the validator address.
-func (k Keeper) GetEligibleValidatorByAddress(ctx context.Context, validatorAddr string) (val types.EligibleValidator, found bool) { //nolint:ireturn
+func (k Keeper) GetEligibleValidatorByAddress(ctx context.Context, validatorAddr string) (val types.EligibleValidator, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EligibleValidatorKeyPrefix))
+	addressStore := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EligibleValidatorByAddressKeyPrefix))
 
-	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var ev types.EligibleValidator
-		k.cdc.MustUnmarshal(iterator.Value(), &ev)
-		if ev.ValidatorAddress == validatorAddr {
-			return ev, true
-		}
+	// Look up the ID from the secondary index
+	idBytes := addressStore.Get([]byte(validatorAddr))
+	if idBytes == nil {
+		return types.EligibleValidator{}, false
 	}
 
-	return types.EligibleValidator{}, false
+	// Fetch the full record using the ID
+	return k.GetEligibleValidator(ctx, string(idBytes))
 }

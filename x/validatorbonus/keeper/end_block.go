@@ -61,32 +61,23 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 		return nil
 	}
 
-	// Check if we've moved to a new day
+	// Check if we've moved to a new day (could be multiple days if chain was down)
 	if currentDay > lastProcessedDay {
-		// End-of-day logic: calculate daily rewards for the previous day
-		previousDay := lastProcessedDay
+		k.Logger().Info("Catching up rewards", "from_day", lastProcessedDay, "to_day", currentDay-1)
 
-		k.Logger().Info("End of day reached", "previous_day", previousDay)
+		for day := lastProcessedDay; day < currentDay; day++ {
+			// Calculate and store daily rewards for the day
+			if err := k.CalculateAndStoreDailyRewards(ctx, day); err != nil {
+				k.Logger().Error("failed to calculate daily rewards", "day", day, "error", err)
+			}
 
-		// Calculate and store daily rewards for the previous day
-		if err := k.CalculateAndStoreDailyRewards(ctx, previousDay); err != nil {
-			k.Logger().Error("failed to calculate daily rewards", "day", previousDay, "error", err)
-		}
-
-		// Check if we've completed a cycle
-		currentCycle := k.GetCycleFromDay(currentDay, cycleDays)
-		previousCycle := k.GetCycleFromDay(previousDay, cycleDays)
-
-		if currentCycle > previousCycle {
-			// End-of-cycle logic: aggregate daily rewards into cycle rewards
-			k.Logger().Info("End of cycle reached", "previous_cycle", previousCycle)
-
-			// Calculate cycle end day
-			cycleEndDay := (previousCycle+1)*cycleDays - 1
-
-			// Calculate and store cycle rewards
-			if err := k.CalculateAndStoreCycleRewards(ctx, cycleEndDay+1); err != nil {
-				k.Logger().Error("failed to calculate cycle rewards", "cycle", previousCycle, "error", err)
+			// Check if this day was the end of a cycle
+			// Cycle boundary is crossed when (day + 1) is a multiple of cycleDays
+			if (day+1)%cycleDays == 0 {
+				k.Logger().Info("End of cycle reached during catch-up", "day", day, "cycle", day/cycleDays)
+				if err := k.CalculateAndStoreCycleRewards(ctx, day+1); err != nil {
+					k.Logger().Error("failed to calculate cycle rewards", "day", day, "error", err)
+				}
 			}
 		}
 

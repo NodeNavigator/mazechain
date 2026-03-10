@@ -7,6 +7,9 @@ var _ binary.ByteOrder
 const (
 	// EligibleValidatorKeyPrefix is the prefix to retrieve all EligibleValidator
 	EligibleValidatorKeyPrefix = "EligibleValidator/value/"
+
+	// EligibleValidatorByAddressKeyPrefix is the prefix to retrieve an EligibleValidator index by its address
+	EligibleValidatorByAddressKeyPrefix = "EligibleValidator/address/"
 )
 
 // EligibleValidatorKey returns the store key to retrieve a EligibleValidator from the index fields

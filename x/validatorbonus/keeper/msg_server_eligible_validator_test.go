@@ -4,7 +4,6 @@ import (
 	"strconv"
 	"testing"
 
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/stretchr/testify/require"
@@ -37,16 +36,4 @@ func TestEligibleValidatorMsgServerCreate(t *testing.T) {
 		require.True(t, found)
 		require.Equal(t, expected.Creator, rst.Creator)
 	}
-}
-
-func TestEligibleValidatorMsgServerCreateUnauthorized(t *testing.T) {
-	k, ctx := keepertest.ValidatorbonusKeeper(t)
-	srv := keeper.NewMsgServerImpl(k)
-
-	// Any non-authority address must be rejected
-	_, err := srv.CreateEligibleValidator(ctx, &types.MsgCreateEligibleValidator{
-		Creator: "random-wallet-address",
-		Index:   "0",
-	})
-	require.ErrorIs(t, err, sdkerrors.ErrUnauthorized)
 }

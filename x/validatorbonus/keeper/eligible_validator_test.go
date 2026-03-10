@@ -20,7 +20,7 @@ func createNEligibleValidator(keeper keeper.Keeper, ctx context.Context, n int) 
 	items := make([]types.EligibleValidator, n)
 	for i := range items {
 		items[i].Id = strconv.Itoa(i)
-
+		items[i].ValidatorAddress = "addr" + strconv.Itoa(i) // Fix: provide a non-empty address for indexing
 		keeper.SetEligibleValidator(ctx, items[i])
 	}
 	return items
